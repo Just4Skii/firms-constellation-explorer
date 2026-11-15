@@ -43,6 +43,22 @@ h3{font-size:18px;line-height:1.13;margin-bottom:10px}
 .app-layout{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(250px,.8fr);gap:18px;min-height:0;flex:1}
 .app-frame{border:1px solid #2d6071;border-radius:20px;overflow:hidden;background:#02070d;min-height:410px;position:relative}
 .app-frame iframe{width:100%;height:100%;min-height:410px;border:0;background:#02070d}
+.preview-shell{height:100%;min-height:410px;background:#030c14;padding:14px;display:flex;flex-direction:column;gap:12px}
+.preview-nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-bottom:1px solid #244858;padding-bottom:12px}
+.preview-nav span{font-size:9px;letter-spacing:.12em;font-weight:800;border:1px solid #315969;border-radius:999px;padding:8px 11px;color:#c4d9da}
+.preview-nav span:first-child{color:#49d4e2;border-color:#49d4e2}
+.preview-main{display:grid;grid-template-columns:1fr .78fr;gap:14px;flex:1;min-height:0}
+.preview-earth{position:relative;min-height:260px;border-radius:14px;overflow:hidden;background:#071b2b;display:grid;place-items:center}
+.preview-earth .sphere{width:min(82%,340px);aspect-ratio:1;border-radius:50%;position:relative;background-image:linear-gradient(135deg,rgba(5,15,27,.04),rgba(1,8,16,.5)),url('https://eyes-on-fires-firms.onrender.com/assets/earth/blue_marble_2048.jpg');background-size:cover;background-position:center;box-shadow:0 0 40px rgba(73,212,226,.22),inset -24px -15px 40px rgba(0,0,0,.65)}
+.preview-earth .sphere:after{content:"";position:absolute;inset:-3%;border:1px solid rgba(73,212,226,.32);border-radius:50%}
+.preview-earth i{position:absolute;width:10px;height:10px;border-radius:50%;background:#ff795e;box-shadow:0 0 14px 4px rgba(255,105,83,.45)}
+.preview-earth i:nth-child(2){top:34%;left:67%}.preview-earth i:nth-child(3){top:62%;left:60%}.preview-earth i:nth-child(4){top:70%;left:76%}
+.preview-layers{display:flex;flex-direction:column;gap:9px;justify-content:center}
+.preview-layer{padding:13px;border:1px solid #244858;border-radius:12px;background:#102b3a}
+.preview-layer b{display:block;font-size:12px;margin-bottom:5px}.preview-layer small{font-size:10px;color:#a3b9bd;line-height:1.4}
+.preview-time{display:flex;gap:9px;align-items:center;border:1px solid #244858;border-radius:10px;padding:9px 12px;color:#9bb5bc;font-size:9px;letter-spacing:.11em;font-weight:800}
+.preview-time span:first-child{color:#49d4e2}
+
 .app-side{display:flex;flex-direction:column;gap:12px}
 .callout{flex:1}
 .callout .num{font-size:10px;letter-spacing:.16em;color:var(--amber);font-weight:800;margin-bottom:10px}
@@ -116,12 +132,18 @@ h3{font-size:18px;line-height:1.13;margin-bottom:10px}
  <h2>One globe. Several ways to investigate Earth.</h2>
  <p class="muted">Navigate the planet, switch between Earth and Night IR, inspect a satellite detection and explore the historical timeline.</p>
  <div class="app-layout">
-  <div class="app-frame"><iframe title="Live Eyes on Fires Earth explorer" src="https://eyes-on-fires-firms.onrender.com/" loading="eager" allow="fullscreen"></iframe></div>
+  <div class="app-frame"><div class="preview-shell">
+   <div class="preview-nav"><span>EARTH</span><span>NIGHT IR</span><span>FIRE STORIES</span><span>SCIENCE LAB</span><span>MISSION GUIDE</span></div>
+   <div class="preview-main"><div class="preview-earth"><div class="sphere"><i></i><i></i><i></i></div></div>
+    <div class="preview-layers"><div class="preview-layer"><b>Satellite observations</b><small>MODIS / VIIRS thermal detections</small></div><div class="preview-layer"><b>Atmosphere & land</b><small>Temperature · VPD · wind · rain</small></div><div class="preview-layer"><b>Fire danger</b><small>Canadian FWI index</small></div></div>
+   </div>
+   <div class="preview-time"><span>HISTORICAL</span> · LIVE · FORECAST <span style="margin-left:auto">TIMELINE PLAYBACK</span></div>
+  </div></div>
   <div class="app-side">
    <div class="card callout"><div class="num">01 / VIEW MODES</div><h3>Earth · Night IR · Fire Stories</h3><p>Change the visual context and open curated historical fire stories.</p></div>
    <div class="card callout"><div class="num" style="color:var(--cyan)">02 / SCIENCE LAB</div><h3>Metrics, missions, methods and readiness</h3><p>Open the research tools from the top navigation.</p></div>
    <div class="card callout"><div class="num" style="color:var(--mint)">03 / TIME CONTROLS</div><h3>Replay the observation archive</h3><p>Move through dates and inspect the satellite detections available for each period.</p></div>
-   <a class="tag" href="https://eyes-on-fires-firms.onrender.com/" target="_blank" rel="noopener" style="justify-content:center;text-decoration:none">OPEN EXPLORER IN NEW TAB ↗</a>
+   <a class="tag" href="https://eyes-on-fires-firms.onrender.com/" target="_blank" rel="noopener" style="justify-content:center;text-decoration:none">OPEN LIVE EXPLORER ↗</a>
   </div>
  </div>
 </section>
