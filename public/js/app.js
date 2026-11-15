@@ -34,6 +34,28 @@
     currentAnalysis: null,
   };
 
+  const CHRONO_YEARS = [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2017, 2015];
+
+  function getLatestWindowDate(winId = STATE.windowId) {
+    const win = STATE.bundle && STATE.bundle.windows && STATE.bundle.windows[winId];
+    return win && Array.isArray(win.clean_days) && win.clean_days.length
+      ? win.clean_days[win.clean_days.length - 1]
+      : null;
+  }
+
+  function syncEarthIntelWithTimeline(opts = {}) {
+    if (!STATE.earthIntel) return;
+    const yr = STATE.selectedYear || 2026;
+    const latest2026 = getLatestWindowDate('2026-11') || '2026-11-13';
+    const isPastContext = yr < 2026 || STATE.selectedDateMode === 'ALL' || STATE.selectedDateMode < latest2026;
+
+    if (opts.forceHistorical || (isPastContext && STATE.earthIntel.mode !== 'historical')) {
+      STATE.earthIntel.setTemporalMode('historical');
+    } else if (STATE.earthIntel.mode === 'historical' || opts.refetch) {
+      STATE.earthIntel.fetchWeatherField();
+    }
+  }
+
   // =========================================================================
   // EXACT MATHEMATICAL & TIE-PRESERVING SUBSET ENGINE (MIRRORS PYTHON ENGINE)
   // =========================================================================
@@ -451,21 +473,16 @@
     });
   }
 
-  function syncPlatformSelectionForWindow(previousWindowId = null) {
+  function syncPlatformSelectionForWindow(previousWindowId = null, initialDate = null, keepPlayback = false) {
     const win = STATE.bundle.windows[STATE.windowId];
     if (!win) return;
     const avail = win.platforms;
     const kept = STATE.selectedPlatforms.filter(p => avail.includes(p));
     STATE.selectedPlatforms = kept.length > 0 ? kept : [...avail];
-    // Default to the latest clean single date so the Earth never gets bombarded with all historical fires at once
-    const prevDate = STATE.selectedDateMode;
-    STATE.selectedDateMode = win.clean_days[win.clean_days.length - 1];
-    stopTimelinePlayback();
-
-    if (STATE.globe3d && previousWindowId && previousWindowId !== STATE.windowId) {
-      // Switching to May 2022 archival window goes back in time -> rotate backwards!
-      const isGoingBack = STATE.windowId < previousWindowId || STATE.selectedDateMode < prevDate;
-      STATE.globe3d.triggerTimeTravelRotation(isGoingBack ? -3 : 3);
+    // Default to the latest clean single date (or explicit target entry date) so the Earth never gets bombarded with all historical fires at once
+    STATE.selectedDateMode = initialDate || win.clean_days[win.clean_days.length - 1];
+    if (!keepPlayback) {
+      stopTimelinePlayback();
     }
   }
 
@@ -741,20 +758,15 @@
     const selDayIdx = win.clean_days.indexOf(STATE.selectedDateMode);
     const activeSpots = selDayIdx >= 0 ? sel.daily_count[selDayIdx] : sel.total_detections;
     const satCount = STATE.selectedPlatforms.length;
-    const friendlyPeriod = STATE.windowId === '2026-11' ? 'Nov 7–13, 2026' : 'May 22–28, 2022';
+    const friendlyPeriod = STATE.windowId === '2026-11' ? 'Nov 7-13, 2026' : 'May 22-28, 2022';
     const activeYr = STATE.selectedYear || (STATE.windowId === '2022-05' ? 2022 : 2026);
+    const isWindowYear = activeYr === 2026 || activeYr === 2022;
+    const yrZones = (STATE.globe3d && Array.isArray(STATE.globe3d.allGlobeEvents))
+      ? STATE.globe3d.allGlobeEvents.filter(ev => ev.year === activeYr)
+      : [];
+    const leadEv = yrZones[0] || null;
+    const storyDate = (leadEv && leadEv.incidentDate) ? leadEv.incidentDate : String(activeYr);
 
-    // Update NASA Eyes Explorer Left & Dock overlays
-    setEl('eyesHudTitle', `${regData.meta.name} (${STATE.windowId})`);
-    setEl('eyesHudDateReadout', STATE.selectedDateMode === 'ALL'
-      ? `${friendlyPeriod} · <span style="color:#38BDF8">${formatCompactSpots(activeSpots)} spots</span> · ${satCount} sats`
-      : `${STATE.selectedDateMode} · <span style="color:#38BDF8">${formatCompactSpots(activeSpots)} spots</span> · ${satCount} sats`
-    );
-    setEl('bottomBarDateText', STATE.selectedDateMode === 'ALL'
-      ? (STATE.windowId === '2026-11' ? 'Nov 13, 2026' : 'May 28, 2022')
-      : STATE.selectedDateMode
-    );
-    setEl('deckPeriodLabel', STATE.windowId === '2026-11' ? 'November 2026' : 'May 2022 Archive');
     const metricLabelMap = {
       count: 'Detection Count (M1)',
       clusters: '1km Clusters (M2c)',
@@ -762,51 +774,113 @@
       nadir_frp: 'Nadir FRP (M4c)',
     };
     setEl('deckMetricLabel', metricLabelMap[STATE.metricMode] || 'Detection / FRP');
-    setEl('deckCenterDateLabel', STATE.selectedDateMode === 'ALL'
-      ? `${win.clean_days[0].replace(/-/g, ' — ')} .. ${win.clean_days[win.clean_days.length - 1].slice(8)}`
-      : STATE.selectedDateMode.replace(/-/g, ' — ')
-    );
-    setEl('activeYearChipLabel', (activeYr === 2026 || activeYr === 2022) ? `Year: ${activeYr}` : `Story: ${activeYr}`);
+    setEl('activeYearChipLabel', isWindowYear ? `Year: ${activeYr}` : `Story: ${activeYr}`);
     setEl('activeSatChipLabel', `Satellites (${satCount})`);
-    setEl('leftEventHeadline', 'Click any glowing fire pin to inspect');
-    setEl('leftEventSub', `${sel.total_detections.toLocaleString()} Detections`);
 
-    // Render ultra-slim 8-slot Horizon Spark Strip (7 clean days + 1 partial trailing UTC day)
+    document.querySelectorAll('#eyesYearTrack .eyes-year-pill').forEach(btn => {
+      btn.classList.toggle('active', Number(btn.dataset.year) === activeYr);
+    });
+
+    const allDaysBtn = document.getElementById('eyesAllDaysBtn');
+    if (allDaysBtn) {
+      allDaysBtn.classList.toggle('active', isWindowYear && STATE.selectedDateMode === 'ALL');
+    }
+
+    // Update HUD Left & Dock overlays synchronously with active temporal state
+    if (isWindowYear) {
+      setEl('eyesHudTitle', `${regData.meta.name} (${STATE.windowId})`);
+      setEl('eyesHudDateReadout', STATE.selectedDateMode === 'ALL'
+        ? `${friendlyPeriod} · <span style="color:#38BDF8">${formatCompactSpots(activeSpots)} spots</span> · ${satCount} sats`
+        : `${STATE.selectedDateMode} · <span style="color:#38BDF8">${formatCompactSpots(activeSpots)} spots</span> · ${satCount} sats`
+      );
+      setEl('bottomBarDateText', STATE.selectedDateMode === 'ALL'
+        ? (STATE.windowId === '2026-11' ? 'Nov 13, 2026' : 'May 28, 2022')
+        : STATE.selectedDateMode
+      );
+      setEl('deckPeriodLabel', STATE.windowId === '2026-11' ? 'November 2026' : 'May 2022 Archive');
+      setEl('deckCenterDateLabel', STATE.selectedDateMode === 'ALL'
+        ? `${win.clean_days[0].replace(/-/g, ' - ')} .. ${win.clean_days[win.clean_days.length - 1].slice(8)}`
+        : STATE.selectedDateMode.replace(/-/g, ' - ')
+      );
+      setEl('leftEventHeadline', 'Click any glowing fire pin to inspect');
+      setEl('leftEventSub', `${sel.total_detections.toLocaleString()} Detections`);
+    } else {
+      setEl('eyesHudTitle', `Story Archive (${activeYr})`);
+      setEl('eyesHudDateReadout',
+        `${storyDate} · <span style="color:#FBBF24">${yrZones.length} verified ${yrZones.length === 1 ? 'event' : 'events'}</span> · Story Archive`
+      );
+      setEl('bottomBarDateText', storyDate);
+      setEl('deckPeriodLabel', `${activeYr} Incident Archive`);
+      setEl('deckCenterDateLabel', storyDate.replace(/-/g, ' - '));
+      setEl('leftEventHeadline', leadEv
+        ? `${activeYr} · ${leadEv.title.slice(0, 34)} - click pin`
+        : `Story: ${activeYr} - click pin to inspect`
+      );
+      setEl('leftEventSub', leadEv
+        ? `${leadEv.regionName || activeYr} Verified Fire Event`
+        : `${yrZones.length} Verified Events (${activeYr})`
+      );
+    }
+
+    // Render Horizon Spark Strip (8-slot daily strip for 2022/2026 windows; chronological year track for archival years)
     const track = document.getElementById('eyesTimelineTrack');
     if (track) {
       track.innerHTML = '';
-      const maxDayCount = Math.max(1, ...sel.daily_count);
-      const monthTag = STATE.windowId === '2022-05' ? 'May' : 'Nov';
-      win.clean_days.forEach((d, idx) => {
-        const cVal = sel.daily_count[idx];
-        const fVal = sel.daily_frp[idx];
-        const isActive = STATE.selectedDateMode === d || (STATE.selectedDateMode === 'ALL' && idx === win.clean_days.length - 1);
-        const barW = Math.max(8, Math.round((cVal / maxDayCount) * 24));
-        const slot = document.createElement('button');
-        slot.type = 'button';
-        slot.className = `eyes-day-slot ${STATE.selectedDateMode === d ? 'active' : ''}`;
-        slot.title = `${d} · ${cVal.toLocaleString()} detections · ${Math.round(fVal).toLocaleString()} MW`;
-        const dayNum = d.slice(8);
-        const lbl = STATE.selectedDateMode === d ? `${monthTag} ${dayNum}` : dayNum;
-        slot.innerHTML = `
-          <span class="eyes-day-lbl">${lbl}</span>
-          <span class="eyes-day-bar" style="width:${barW}px"></span>
-        `;
-        slot.addEventListener('click', () => {
-          stopTimelinePlayback();
-          selectDateWithTimeTravel(d, win.clean_days);
+      if (isWindowYear) {
+        const maxDayCount = Math.max(1, ...sel.daily_count);
+        const monthTag = STATE.windowId === '2022-05' ? 'May' : 'Nov';
+        win.clean_days.forEach((d, idx) => {
+          const cVal = sel.daily_count[idx];
+          const fVal = sel.daily_frp[idx];
+          const barW = Math.max(8, Math.round((cVal / maxDayCount) * 24));
+          const slot = document.createElement('button');
+          slot.type = 'button';
+          slot.className = `eyes-day-slot ${STATE.selectedDateMode === d ? 'active' : ''}`;
+          slot.dataset.date = d;
+          slot.title = `${d} · ${cVal.toLocaleString()} detections · ${Math.round(fVal).toLocaleString()} MW`;
+          const dayNum = d.slice(8);
+          const lbl = STATE.selectedDateMode === d ? `${monthTag} ${dayNum}` : dayNum;
+          slot.innerHTML = `
+            <span class="eyes-day-lbl">${lbl}</span>
+            <span class="eyes-day-bar" style="width:${barW}px"></span>
+          `;
+          slot.addEventListener('click', () => {
+            stopTimelinePlayback();
+            selectDateWithTimeTravel(d, win.clean_days);
+          });
+          track.appendChild(slot);
         });
-        track.appendChild(slot);
-      });
 
-      const qSlot = document.createElement('div');
-      qSlot.className = 'eyes-day-slot quarantined';
-      qSlot.title = `Partial UTC trailing day (${win.quarantined_day}) quarantined from daily rankings`;
-      qSlot.innerHTML = `
-        <span class="eyes-day-lbl">${win.quarantined_day.slice(8)}*</span>
-        <span class="eyes-day-bar" style="width:10px;background:#FB7185"></span>
-      `;
-      track.appendChild(qSlot);
+        const qSlot = document.createElement('div');
+        qSlot.className = 'eyes-day-slot quarantined';
+        qSlot.title = `Partial UTC trailing day (${win.quarantined_day}) quarantined from daily rankings`;
+        qSlot.innerHTML = `
+          <span class="eyes-day-lbl">${win.quarantined_day.slice(8)}*</span>
+          <span class="eyes-day-bar" style="width:10px;background:#FB7185"></span>
+        `;
+        track.appendChild(qSlot);
+      } else {
+        const ascYears = [...CHRONO_YEARS].reverse();
+        ascYears.forEach((yrVal) => {
+          const isYrActive = yrVal === activeYr;
+          const slot = document.createElement('button');
+          slot.type = 'button';
+          slot.className = `eyes-day-slot ${isYrActive ? 'active' : ''}`;
+          slot.dataset.year = String(yrVal);
+          slot.title = `Jump to ${yrVal} (${yrVal === 2026 || yrVal === 2022 ? '7-Day CSV Window' : 'Story Archive'})`;
+          slot.innerHTML = `
+            <span class="eyes-day-lbl">${yrVal}</span>
+            <span class="eyes-day-bar" style="width:${isYrActive ? 22 : 10}px;background:${yrVal === 2026 || yrVal === 2022 ? '#38BDF8' : '#F59E0B'}"></span>
+          `;
+          slot.addEventListener('click', () => {
+            stopTimelinePlayback();
+            if (typeof STATE._switchHistoricalYear === 'function') {
+              STATE._switchHistoricalYear(yrVal, true);
+            }
+          });
+          track.appendChild(slot);
+        });
+      }
     }
 
     // Historical Multi-Year Comparison Table (2022 Archival vs 2026 Pilot for selected region)
@@ -872,6 +946,7 @@
     }
     STATE.selectedDateMode = newDate;
     refreshAllViews();
+    syncEarthIntelWithTimeline({ refetch: true });
 
     // Update active satellite imagery pop-up if it is open
     if (STATE.reconPopup && STATE.reconPopup.popupEl && STATE.reconPopup.popupEl.classList.contains('open')) {
@@ -1306,32 +1381,105 @@
   // TIMELINE PLAYBACK CONTROLLER (NASA EYES)
   // =========================================================================
 
+  function stepTimelineCore(dir, options = {}) {
+    const fromPlayback = Boolean(options.fromPlayback);
+    const activeYr = STATE.selectedYear || (STATE.windowId === '2022-05' ? 2022 : 2026);
+    const isWindowYear = activeYr === 2026 || activeYr === 2022;
+
+    if (isWindowYear) {
+      const win = STATE.bundle.windows[STATE.windowId];
+      const days = win.clean_days;
+      const idx = days.indexOf(STATE.selectedDateMode);
+      if (idx < 0) {
+        const edgeIdx = dir < 0 ? days.length - 1 : 0;
+        selectDateWithTimeTravel(days[edgeIdx], days);
+        return { moved: true };
+      }
+
+      const nextIdx = idx + dir;
+      if (nextIdx >= 0 && nextIdx < days.length) {
+        selectDateWithTimeTravel(days[nextIdx], days);
+        return { moved: true };
+      }
+
+      // Cross window boundary into adjacent chronological historical year
+      const yrIdx = CHRONO_YEARS.indexOf(activeYr);
+      const targetYrIdx = dir < 0 ? yrIdx + 1 : yrIdx - 1;
+      if (targetYrIdx < 0) {
+        showToast(`Latest verified observation reached (${days[days.length - 1]})`);
+        return { moved: false, boundary: 'latest' };
+      }
+      if (targetYrIdx >= CHRONO_YEARS.length) {
+        showToast(`Earliest verified archive reached (${CHRONO_YEARS[CHRONO_YEARS.length - 1]})`);
+        return { moved: false, boundary: 'earliest' };
+      }
+
+      const nextYr = CHRONO_YEARS[targetYrIdx];
+      if (typeof STATE._switchHistoricalYear === 'function') {
+        STATE._switchHistoricalYear(nextYr, !fromPlayback, { keepPlayback: fromPlayback });
+      }
+      return { moved: true };
+    }
+
+    // Archival Story Year -> step to earlier (dir < 0) or newer (dir > 0) chronological year
+    const yrIdx = CHRONO_YEARS.indexOf(activeYr);
+    const safeIdx = yrIdx >= 0 ? yrIdx : 0;
+    const targetYrIdx = dir < 0 ? safeIdx + 1 : safeIdx - 1;
+    if (targetYrIdx >= CHRONO_YEARS.length) {
+      showToast(`Earliest verified archive reached (${CHRONO_YEARS[CHRONO_YEARS.length - 1]})`);
+      return { moved: false, boundary: 'earliest' };
+    }
+    if (targetYrIdx < 0) {
+      showToast('Latest verified observation reached (2026-11-13)');
+      return { moved: false, boundary: 'latest' };
+    }
+
+    const nextYr = CHRONO_YEARS[targetYrIdx];
+    let entryDate = null;
+    if (nextYr === 2022 || nextYr === 2026) {
+      const targetWinId = nextYr === 2022 ? '2022-05' : '2026-11';
+      const targetDays = STATE.bundle.windows[targetWinId].clean_days;
+      entryDate = dir < 0 ? targetDays[targetDays.length - 1] : targetDays[0];
+    }
+    if (typeof STATE._switchHistoricalYear === 'function') {
+      STATE._switchHistoricalYear(nextYr, !fromPlayback, {
+        keepPlayback: fromPlayback,
+        initialDate: entryDate,
+      });
+    }
+    return { moved: true };
+  }
+
   function toggleTimelinePlayback(direction = 1) {
     if (STATE.playbackPlaying && STATE.playbackDirection === direction) {
       stopTimelinePlayback();
       return;
     }
     if (STATE.playbackTimer) clearTimeout(STATE.playbackTimer);
-    const win = STATE.bundle.windows[STATE.windowId];
-    const days = win.clean_days;
     STATE.playbackPlaying = true;
     STATE.playbackDirection = direction;
 
     const playBtn = document.getElementById('eyesPlayBtn');
     const rewindBtn = document.getElementById('eyesRewindBtn');
-    if (playBtn) playBtn.textContent = direction > 0 ? '⏸' : '▶';
-    if (rewindBtn) rewindBtn.textContent = direction < 0 ? '⏸' : '◀';
+    if (playBtn) {
+      playBtn.textContent = direction > 0 ? '⏸' : '▶';
+      playBtn.classList.toggle('active', direction > 0);
+    }
+    if (rewindBtn) {
+      rewindBtn.textContent = direction < 0 ? '⏸' : '◀';
+      rewindBtn.classList.toggle('active', direction < 0);
+    }
 
-    let idx = days.indexOf(STATE.selectedDateMode);
-    if (idx < 0) idx = direction > 0 ? 0 : days.length - 1;
-
-    const stepDay = () => {
+    const stepLoop = () => {
       if (!STATE.playbackPlaying) return;
-      selectDateWithTimeTravel(days[idx], days, direction);
-      idx = (idx + direction + days.length) % days.length;
-      STATE.playbackTimer = setTimeout(stepDay, Math.round(950 / STATE.playbackSpeed));
+      const res = stepTimelineCore(direction, { fromPlayback: true });
+      if (!res.moved) {
+        stopTimelinePlayback();
+        return;
+      }
+      STATE.playbackTimer = setTimeout(stepLoop, Math.round(950 / STATE.playbackSpeed));
     };
-    stepDay();
+    stepLoop();
   }
 
   function stopTimelinePlayback() {
@@ -1340,18 +1488,19 @@
     STATE.playbackTimer = null;
     const playBtn = document.getElementById('eyesPlayBtn');
     const rewindBtn = document.getElementById('eyesRewindBtn');
-    if (playBtn) playBtn.textContent = '▶';
-    if (rewindBtn) rewindBtn.textContent = '◀';
+    if (playBtn) {
+      playBtn.textContent = '▶';
+      playBtn.classList.remove('active');
+    }
+    if (rewindBtn) {
+      rewindBtn.textContent = '◀';
+      rewindBtn.classList.remove('active');
+    }
   }
 
   function stepTimeline(dir) {
     stopTimelinePlayback();
-    const win = STATE.bundle.windows[STATE.windowId];
-    const days = win.clean_days;
-    let idx = days.indexOf(STATE.selectedDateMode);
-    if (idx < 0) idx = dir > 0 ? 0 : days.length - 1;
-    else idx = (idx + dir + days.length) % days.length;
-    selectDateWithTimeTravel(days[idx], days, dir);
+    stepTimelineCore(dir, { fromPlayback: false });
   }
 
   // =========================================================================
@@ -1445,9 +1594,12 @@
     const openOvBtn = document.getElementById('hudOpenOverviewBtn');
     if (openOvBtn) openOvBtn.addEventListener('click', () => switchView('overview'));
 
-    function switchHistoricalYear(newYear, autoFly = true) {
+    function switchHistoricalYear(newYear, autoFly = true, options = {}) {
       const yr = Number(newYear) || 2026;
       const prevYr = STATE.selectedYear || 2026;
+      const keepPlayback = Boolean(options.keepPlayback);
+      const initialDate = options.initialDate || null;
+      const prevWinId = STATE.windowId;
       STATE.selectedYear = yr;
 
       document.querySelectorAll('#eyesYearTrack .eyes-year-pill').forEach(btn => {
@@ -1462,43 +1614,39 @@
           STATE.globe3d.triggerTimeTravelRotation(isGoingBack ? -3 : 3);
         }
 
-        if (yr === 2022 && STATE.windowId !== '2022-05') {
+        if (yr === 2022) {
           STATE.windowId = '2022-05';
           const winSel = document.getElementById('globalWindowSelect');
           if (winSel) winSel.value = '2022-05';
-          syncPlatformSelectionForWindow('2026-11');
-        } else if (yr === 2026 && STATE.windowId !== '2026-11') {
+          if (prevWinId !== '2022-05') populateRegionSelector();
+          syncPlatformSelectionForWindow(prevWinId, initialDate, keepPlayback);
+        } else if (yr === 2026) {
           STATE.windowId = '2026-11';
           const winSel = document.getElementById('globalWindowSelect');
           if (winSel) winSel.value = '2026-11';
-          syncPlatformSelectionForWindow('2022-05');
+          if (prevWinId !== '2026-11') populateRegionSelector();
+          syncPlatformSelectionForWindow(prevWinId, initialDate, keepPlayback);
+        } else if (!keepPlayback) {
+          stopTimelinePlayback();
         }
 
         refreshAllViews();
+        syncEarthIntelWithTimeline({
+          forceHistorical: yr < 2026 && !options.skipModeSync,
+          refetch: !options.skipWeatherFetch,
+        });
 
         const leadEv = yrZones[0] || null;
-        const calloutHeadline = document.getElementById('leftEventHeadline');
-        const deckDate = document.getElementById('deckCenterDateLabel');
-        const yearChipLbl = document.getElementById('activeYearChipLabel');
-        if (yearChipLbl) {
-          yearChipLbl.textContent = (yr === 2026 || yr === 2022) ? `Year: ${yr}` : `Story: ${yr}`;
-        }
-        if (leadEv && yr !== 2026 && yr !== 2022) {
-          if (deckDate) deckDate.textContent = `${leadEv.incidentDate.replace(/-/g, ' — ')}`;
-          if (calloutHeadline) calloutHeadline.textContent = `${yr} · ${leadEv.title.slice(0, 34)} — click pin to inspect`;
-        } else if (calloutHeadline) {
-          calloutHeadline.textContent = 'Click any glowing fire pin to inspect';
-        }
-
         if (autoFly && leadEv && yr !== 2026) {
           if (STATE.reconPopup) STATE.reconPopup.hide(false);
           STATE.globe3d.flyTo(leadEv.lat, leadEv.lon, 1.85, leadEv);
         } else if (autoFly && yr === 2026) {
           if (STATE.reconPopup) STATE.reconPopup.hide(false);
+          STATE.globe3d.selectedFireZone = null;
           STATE.globe3d.flyTo(-12.0, 22.0, 1.12);
         }
 
-        if (yr !== prevYr) {
+        if (yr !== prevYr && !options.silentToast) {
           showToast(isGoingBack
             ? `◀ Moving Back in Time to ${yr} · Showing ${yr} Verified Fire Incidents Only`
             : `▶ Advancing in Time to ${yr} · Showing ${yr} Verified Fire Incidents Only`
@@ -1507,8 +1655,16 @@
       }
     }
 
-    // Bind global handle for FireStoriesManager
+    // Bind global handles for FireStoriesManager and EarthIntelligenceEngine
     STATE._switchHistoricalYear = switchHistoricalYear;
+    STATE._restoreLivePresent = () => {
+      switchHistoricalYear(2026, true, {
+        initialDate: getLatestWindowDate('2026-11'),
+        skipModeSync: true,
+        skipWeatherFetch: true,
+        silentToast: true,
+      });
+    };
 
     const sciLabBtn = document.getElementById('scienceLabToggleBtn');
     const sciLabPop = document.getElementById('scienceLabPopover');
@@ -1739,13 +1895,10 @@
     const winSel = document.getElementById('globalWindowSelect');
     if (winSel) {
       winSel.addEventListener('change', (e) => {
-        const prevWinId = STATE.windowId;
-        STATE.windowId = e.target.value;
-        populateRegionSelector();
-        syncPlatformSelectionForWindow(prevWinId);
-        refreshAllViews();
-        if (STATE.windowId === '2022_may' && prevWinId !== '2022_may') {
-          showToast('Rewinding Earth backward to May 2022 archival constellation window');
+        const nextWinId = e.target.value;
+        const targetYr = nextWinId === '2022-05' ? 2022 : 2026;
+        if (typeof STATE._switchHistoricalYear === 'function') {
+          STATE._switchHistoricalYear(targetYr, true);
         }
       });
     }
@@ -1836,8 +1989,15 @@
     if (allDaysBtn) {
       allDaysBtn.addEventListener('click', () => {
         stopTimelinePlayback();
-        STATE.selectedDateMode = 'ALL';
-        refreshAllViews();
+        const activeYr = STATE.selectedYear || 2026;
+        if (activeYr !== 2026 && activeYr !== 2022 && typeof STATE._switchHistoricalYear === 'function') {
+          const targetYr = activeYr <= 2022 ? 2022 : 2026;
+          STATE._switchHistoricalYear(targetYr, true, { initialDate: 'ALL' });
+        } else {
+          STATE.selectedDateMode = 'ALL';
+          refreshAllViews();
+          syncEarthIntelWithTimeline({ forceHistorical: true });
+        }
       });
     }
 

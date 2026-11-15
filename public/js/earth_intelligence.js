@@ -679,6 +679,14 @@
         year: String(yr),
         lead_hours: String(this.forecastLeadHours),
       });
+      if (
+        this.mode === 'historical' &&
+        (yr === 2026 || yr === 2022) &&
+        this.state.selectedDateMode &&
+        this.state.selectedDateMode !== 'ALL'
+      ) {
+        qs.set('date', this.state.selectedDateMode);
+      }
       try {
         const resp = await fetch(`/api/earth-intelligence?${qs.toString()}`);
         if (!resp.ok) return;
@@ -984,7 +992,13 @@
       // Temporal Mode Selector (Historical | Live | Forecast)
       document.querySelectorAll('.temporal-mode-pill').forEach(btn => {
         btn.addEventListener('click', () => {
-          this.setTemporalMode(btn.dataset.temporalMode);
+          const targetMode = btn.dataset.temporalMode;
+          const isPastContext = (this.state.selectedYear || 2026) < 2026 ||
+            (this.state.selectedDateMode && this.state.selectedDateMode !== '2026-11-13');
+          if ((targetMode === 'live' || targetMode === 'forecast') && isPastContext && typeof this.state._restoreLivePresent === 'function') {
+            this.state._restoreLivePresent();
+          }
+          this.setTemporalMode(targetMode);
         });
       });
 
@@ -995,17 +1009,6 @@
           this.fetchWeatherField();
         });
       }
-
-      // Re-fetch ERA5 reanalysis date whenever a historical year is selected
-      document.querySelectorAll('#eyesYearTrack .eyes-year-pill').forEach(btn => {
-        btn.addEventListener('click', () => {
-          setTimeout(() => {
-            if (this.mode === 'historical') {
-              this.fetchWeatherField();
-            }
-          }, 80);
-        });
-      });
 
       const closeEvBtn = document.getElementById('closeIntelEvidenceBtn');
       const evPop = document.getElementById('intelEvidencePopup');
