@@ -1,9 +1,9 @@
 <div align="center">
 
-# 🌍 Eyes on Fires: FIRMS Constellation & Earth Intelligence Explorer
+# 🌍 Eyes on Fire: FIRMS Constellation & Earth Intelligence Explorer
 
 [![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![NASA FIRMS](https://img.shields.io/badge/NASA-FIRMS_MODIS_%2F_VIIRS-0B3D91?logo=nasa&logoColor=white)](https://firms.modaps.eosdis.nasa.gov/)
+[![FIRMS Active Fire Data](https://img.shields.io/badge/Data-FIRMS_MODIS_%2F_VIIRS-EA580C)](https://firms.modaps.eosdis.nasa.gov/)
 [![Render Ready](https://img.shields.io/badge/Deploy-Render_Web_Service-46E3B7?logo=render&logoColor=0F172A)](render.yaml)
 [![Canadian FWI](https://img.shields.io/badge/Fire_Danger-CFFDRS_FWI_System-FB923C)](engine/cffdrs_cffwis.py)
 
@@ -84,3 +84,13 @@ python -m unittest discover -s tests -p "test_*.py" -v
    - **Build Command:** `pip install -r requirements.txt`
    - **Start Command:** `python server.py`
    - **Health Check:** `/api/health`
+
+---
+
+## 🤖 Use of Super Intelligence (SI) Disclosure
+
+Super Intelligence (SI) tools were used to accelerate development, refactoring, and documentation for **Eyes on Fire**:
+
+- **Code & Data Tooling:** SI assisted with structuring the Python analytics API (`server.py`, `engine/analytics_engine.py`, `engine/earth_intel_engine.py`), the WebGL 3D frontend overlays (`public/js/`), and the standalone verification test suite. All MODIS/VIIRS active-fire metrics, ERA5/NWP meteorological variables, and CFFDRS FWI equations remain strictly grounded in deterministic scientific sources with zero hallucinated predictions.
+- **Audio Narration:** Chapter voiceovers inside `Fire Stories` (labeled `AI_GENERATED_NARRATION` in UI metadata) and walkthrough demo video voiceovers (`en-US-AndrewNeural`) were generated with SI neural speech synthesis strictly from cited historical and technical scripts.
+- **Images & Videos:** Project demo walkthrough videos include a persistent top-right SI watermark (`SI-Assisted Demo | SI-Generated Audio & Visuals`) and matching MP4 container metadata. No official agency logos or mission insignia are modified or included in generated branding elements.
