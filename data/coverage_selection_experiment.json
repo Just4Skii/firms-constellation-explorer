@@ -1,0 +1,573 @@
+{
+  "target_bbox": {
+    "min_lon": -120,
+    "min_lat": 49,
+    "max_lon": -110,
+    "max_lat": 60
+  },
+  "fixed_time": {
+    "candidates": 14,
+    "bytes": 114821597,
+    "valid_alberta": 1,
+    "wrong_coverage": 13
+  },
+  "cmr_metadata": {
+    "all_candidates": 103,
+    "daytime_17_22_candidates": 50,
+    "polygon_intersection_candidates": 50,
+    "polygon_intersection_size_mb": 674.8,
+    "known_positive_included": true,
+    "known_wrong_polygon_intersects": false
+  },
+  "metadata_on_fixed_set": {
+    "accepted": 1,
+    "incorrect_acceptances": 0,
+    "missed_valid": 0
+  },
+  "coarse_geolocation": {
+    "accepted": 1,
+    "incorrect_acceptances": 0,
+    "missed_valid": 0,
+    "note": "requires downloading the 5 km geolocation/cloud product"
+  },
+  "full_pixel_verification": {
+    "status": "not completed for all CMR candidates",
+    "note": "5 km bbox is the coarse screen; exact pixel footprint remains the final check"
+  },
+  "local_fixed_granules": [
+    {
+      "granule": "MOD35_L2.A2022152.1630.061.2022153014155.hdf",
+      "platform": "Terra",
+      "bbox": [
+        60.15296173095703,
+        84.56195831298828,
+        -117.42074584960938,
+        -19.434885025024414
+      ],
+      "covers_alberta": false,
+      "bytes": 12000674
+    },
+    {
+      "granule": "MOD35_L2.A2022153.1630.061.2022159221632.hdf",
+      "platform": "Terra",
+      "bbox": [
+        -62.34535598754883,
+        -40.4646110534668,
+        79.30879211425781,
+        120.9951400756836
+      ],
+      "covers_alberta": false,
+      "bytes": 2796278
+    },
+    {
+      "granule": "MOD35_L2.A2022154.1630.061.2022157232143.hdf",
+      "platform": "Terra",
+      "bbox": [
+        18.95645523071289,
+        40.01909255981445,
+        -101.86334228515625,
+        -73.66124725341797
+      ],
+      "covers_alberta": false,
+      "bytes": 13880863
+    },
+    {
+      "granule": "MOD35_L2.A2022155.1630.061.2022156015126.hdf",
+      "platform": "Terra",
+      "bbox": [
+        -17.9016170501709,
+        2.8763928413391113,
+        75.7724838256836,
+        100.43194580078125
+      ],
+      "covers_alberta": false,
+      "bytes": 3148862
+    },
+    {
+      "granule": "MOD35_L2.A2022156.1630.061.2022157014629.hdf",
+      "platform": "Terra",
+      "bbox": [
+        -25.343618392944336,
+        -4.453998565673828,
+        -108.78697967529297,
+        -83.40176391601562
+      ],
+      "covers_alberta": false,
+      "bytes": 13483905
+    },
+    {
+      "granule": "MOD35_L2.A2022157.1630.061.2022158013635.hdf",
+      "platform": "Terra",
+      "bbox": [
+        26.14522361755371,
+        47.30486297607422,
+        63.75088882446289,
+        94.62413024902344
+      ],
+      "covers_alberta": false,
+      "bytes": 3587070
+    },
+    {
+      "granule": "MOD35_L2.A2022158.1630.061.2022159015028.hdf",
+      "platform": "Terra",
+      "bbox": [
+        -69.72509765625,
+        -47.22995376586914,
+        -136.32872009277344,
+        -85.39486694335938
+      ],
+      "covers_alberta": false,
+      "bytes": 9615570
+    },
+    {
+      "granule": "MYD35_L2.A2022152.1930.061.2022312233353.hdf",
+      "platform": "Aqua",
+      "bbox": [
+        -75.86319732666016,
+        -52.688743591308594,
+        -98.61103057861328,
+        -35.007164001464844
+      ],
+      "covers_alberta": false,
+      "bytes": 5020644
+    },
+    {
+      "granule": "MYD35_L2.A2022153.1930.061.2022313012922.hdf",
+      "platform": "Aqua",
+      "bbox": [
+        31.642593383789062,
+        53.08119201660156,
+        83.99747467041016,
+        117.73690795898438
+      ],
+      "covers_alberta": false,
+      "bytes": 3720150
+    },
+    {
+      "granule": "MYD35_L2.A2022154.1930.061.2022313040231.hdf",
+      "platform": "Aqua",
+      "bbox": [
+        -30.44093132019043,
+        -9.531048774719238,
+        -97.87791442871094,
+        -71.64923858642578
+      ],
+      "covers_alberta": false,
+      "bytes": 13151168
+    },
+    {
+      "granule": "MYD35_L2.A2022155.1930.061.2022313074043.hdf",
+      "platform": "Aqua",
+      "bbox": [
+        -13.37094783782959,
+        7.4825944900512695,
+        78.63496398925781,
+        103.06864929199219
+      ],
+      "covers_alberta": false,
+      "bytes": 3289951
+    },
+    {
+      "granule": "MYD35_L2.A2022156.1930.061.2022313104955.hdf",
+      "platform": "Aqua",
+      "bbox": [
+        14.996617317199707,
+        35.97762680053711,
+        -106.7740249633789,
+        -79.6231689453125
+      ],
+      "covers_alberta": false,
+      "bytes": 14573749
+    },
+    {
+      "granule": "MYD35_L2.A2022157.1930.061.2022313130929.hdf",
+      "platform": "Aqua",
+      "bbox": [
+        -58.875492095947266,
+        -37.12577438354492,
+        60.362892150878906,
+        98.78914642333984
+      ],
+      "covers_alberta": false,
+      "bytes": 3232995
+    },
+    {
+      "granule": "MYD35_L2.A2022158.1930.061.2022313153601.hdf",
+      "platform": "Aqua",
+      "bbox": [
+        57.69917678833008,
+        81.56985473632812,
+        -154.40174865722656,
+        -73.18502807617188
+      ],
+      "covers_alberta": true,
+      "bytes": 13319718
+    }
+  ],
+  "cmr_polygon_candidates": [
+    {
+      "granule": "MOD35_L2.A2022152.1815.061.2022153074026.hdf",
+      "time_start": "2022-06-01T18:15:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 14.3143186569214,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022152.1950.061.2022153074033.hdf",
+      "time_start": "2022-06-01T19:50:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 14.085636138916,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022152.1955.061.2022153073951.hdf",
+      "time_start": "2022-06-01T19:55:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 12.3339958190918,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022153.2035.061.2022159221818.hdf",
+      "time_start": "2022-06-02T20:35:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.8381690979004,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022154.1800.061.2022157235255.hdf",
+      "time_start": "2022-06-03T18:00:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.0361852645874,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022154.1805.061.2022157232146.hdf",
+      "time_start": "2022-06-03T18:05:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.385814666748,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022154.1940.061.2022157232409.hdf",
+      "time_start": "2022-06-03T19:40:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.9679222106934,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022155.1710.061.2022156015319.hdf",
+      "time_start": "2022-06-04T17:10:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.0317611694336,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022155.1845.061.2022156075608.hdf",
+      "time_start": "2022-06-04T18:45:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.4191064834595,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022155.2020.061.2022156075538.hdf",
+      "time_start": "2022-06-04T20:20:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 12.8803033828735,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022155.2025.061.2022156075558.hdf",
+      "time_start": "2022-06-04T20:25:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 12.4824514389038,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022156.1750.061.2022157014524.hdf",
+      "time_start": "2022-06-05T17:50:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.6249027252197,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022156.1925.061.2022157074205.hdf",
+      "time_start": "2022-06-05T19:25:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.1504602432251,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022156.1930.061.2022157074218.hdf",
+      "time_start": "2022-06-05T19:30:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.1710119247437,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022157.1830.061.2022158075940.hdf",
+      "time_start": "2022-06-06T18:30:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.8067121505737,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022157.1835.061.2022158080437.hdf",
+      "time_start": "2022-06-06T18:35:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 14.3146543502808,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022157.2010.061.2022158080405.hdf",
+      "time_start": "2022-06-06T20:10:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.3589191436768,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022158.1735.061.2022159014730.hdf",
+      "time_start": "2022-06-07T17:35:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 14.2574968338013,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022158.1740.061.2022159014954.hdf",
+      "time_start": "2022-06-07T17:40:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 14.2071981430054,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022158.1915.061.2022159073716.hdf",
+      "time_start": "2022-06-07T19:15:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 14.5319633483887,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MOD35_L2.A2022158.2050.061.2022159073729.hdf",
+      "time_start": "2022-06-07T20:50:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 12.2856864929199,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022152.1825.061.2022312233419.hdf",
+      "time_start": "2022-06-01T18:25:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 12.8676309585571,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022152.1830.061.2022312233415.hdf",
+      "time_start": "2022-06-01T18:30:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 11.9654302597046,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022152.2000.061.2022312233455.hdf",
+      "time_start": "2022-06-01T20:00:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.8042669296265,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022152.2005.061.2022312233510.hdf",
+      "time_start": "2022-06-01T20:05:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 14.4055891036987,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022152.2140.061.2022312233431.hdf",
+      "time_start": "2022-06-01T21:40:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 12.7473850250244,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022152.2145.061.2022312233447.hdf",
+      "time_start": "2022-06-01T21:45:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 14.2946729660034,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022153.1905.061.2022313013051.hdf",
+      "time_start": "2022-06-02T19:05:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.5161190032959,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022153.1910.061.2022313013043.hdf",
+      "time_start": "2022-06-02T19:10:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.1724491119385,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022153.2045.061.2022313013132.hdf",
+      "time_start": "2022-06-02T20:45:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 14.4088363647461,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022153.2050.061.2022313013118.hdf",
+      "time_start": "2022-06-02T20:50:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 14.0507659912109,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022154.1950.061.2022313040243.hdf",
+      "time_start": "2022-06-03T19:50:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.4916172027588,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022154.1955.061.2022313040250.hdf",
+      "time_start": "2022-06-03T19:55:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.0540838241577,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022154.2130.061.2022313040313.hdf",
+      "time_start": "2022-06-03T21:30:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.8822164535522,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022155.1855.061.2022313074118.hdf",
+      "time_start": "2022-06-04T18:55:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.8836116790771,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022155.1900.061.2022313074118.hdf",
+      "time_start": "2022-06-04T19:00:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 12.4703664779663,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022155.2030.061.2022313074201.hdf",
+      "time_start": "2022-06-04T20:30:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 12.9183864593506,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022155.2035.061.2022313074207.hdf",
+      "time_start": "2022-06-04T20:35:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 14.0994453430176,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022156.1935.061.2022313104934.hdf",
+      "time_start": "2022-06-05T19:35:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.4510164260864,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022156.1940.061.2022313105000.hdf",
+      "time_start": "2022-06-05T19:40:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 14.0636959075928,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022156.2115.061.2022313105024.hdf",
+      "time_start": "2022-06-05T21:15:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.4149837493896,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022156.2120.061.2022313105015.hdf",
+      "time_start": "2022-06-05T21:20:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.2842168807983,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022157.1845.061.2022313131004.hdf",
+      "time_start": "2022-06-06T18:45:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 13.6559743881226,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022157.2020.061.2022313131027.hdf",
+      "time_start": "2022-06-06T20:20:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 14.2533445358276,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022157.2025.061.2022313131030.hdf",
+      "time_start": "2022-06-06T20:25:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 12.830096244812,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022157.2200.061.2022313131111.hdf",
+      "time_start": "2022-06-06T22:00:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 12.5128993988037,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022158.1925.061.2022313153559.hdf",
+      "time_start": "2022-06-07T19:25:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 14.531177520752,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022158.1930.061.2022313153601.hdf",
+      "time_start": "2022-06-07T19:30:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 12.702672958374,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022158.2100.061.2022313153640.hdf",
+      "time_start": "2022-06-07T21:00:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 12.8835010528564,
+      "polygon_intersects_target": true
+    },
+    {
+      "granule": "MYD35_L2.A2022158.2105.061.2022313153526.hdf",
+      "time_start": "2022-06-07T21:05:00.000Z",
+      "day_night_flag": "DAY",
+      "size_mb": 14.6829471588135,
+      "polygon_intersects_target": true
+    }
+  ],
+  "known_positive_control": {
+    "granule": "MYD35_L2.A2022142.1930.061.2022311051127.hdf",
+    "time_start": "2022-05-22T19:30:00.000Z",
+    "day_night_flag": "DAY",
+    "size_mb": 13.5899600982666,
+    "polygon_intersects_target": true
+  },
+  "known_wrong_control": null,
+  "decision": {
+    "fixed_time_selection": "INVALID",
+    "cmr_metadata_alone": "INSUFFICIENT",
+    "coarse_geolocation": "VALID_SCREEN",
+    "full_pixel": "REQUIRED_FOR_FINAL_OPPORTUNITY"
+  }
+}

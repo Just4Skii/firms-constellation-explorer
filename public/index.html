@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eyes on the Earth — FIRMS Constellation Intelligence</title>
+  <link rel="icon" type="image/svg+xml" href="assets/branding/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/design-system.css" />
+</head>
+<body class="theme-dark">
+
+  <!-- ========================================================================
+       1. FULL-BLEED 3D EARTH & SATELLITE ORBIT STAGE (100vw x 100vh)
+       ======================================================================== -->
+  <div class="nasa-eyes-viewport">
+    <canvas id="eyesWebGLCanvas" aria-hidden="true"></canvas>
+    <canvas id="eyesGlobeCanvas" aria-label="NASA Eyes on the Earth 3D Satellite and Active Fire Observatory"></canvas>
+    <div id="eyesGlobeTooltip" class="globe-tooltip" style="display:none"></div>
+  </div>
+
+  <!-- ========================================================================
+       2. TOP CENTERED EXPLORER COMMAND PILL (Direction A — Horizon Capsule)
+       ======================================================================== -->
+  <header class="nasa-top-header">
+    <div class="nasa-brand-cluster" id="brandResetGlobeBtn" title="Return to Full 3D Earth View">
+      <div class="nasa-meatball-badge">NASA<br><span style="font-size:6px;font-weight:700;color:#7DD3FC">FIRMS</span></div>
+      <div class="nasa-brand-sub">
+        <span class="line-2" style="font-size:13px;font-weight:700;color:#F8FAFC;font-family:var(--font-display)">Eyes on Fires</span>
+        <span class="line-1">FIRMS EXPLORER</span>
+      </div>
+    </div>
+
+    <div class="nasa-brand-divider"></div>
+
+    <nav class="nasa-top-nav" aria-label="Primary NASA Eyes Navigation">
+      <div class="nav-pill-group primary-modes">
+        <button type="button" class="nasa-top-link active" id="topLinkVisibleEarth" data-earth-mode="visible_earth"><span class="dot" style="background:#38BDF8"></span>Earth</button>
+        <button type="button" class="nasa-top-link" id="topLinkNightEarth" data-earth-mode="cobalt_night">🔥 Night IR</button>
+        <button type="button" class="nasa-top-link nav-btn featured-stories" data-view="fire-stories">📜 Fire Stories</button>
+      </div>
+
+      <div class="nasa-brand-divider"></div>
+
+      <div class="science-lab-wrap">
+        <button type="button" class="nasa-lab-trigger" id="scienceLabToggleBtn" aria-expanded="false" aria-haspopup="true">Science Lab ▾</button>
+        <div class="science-lab-popover" id="scienceLabPopover" role="menu">
+          <div class="lab-pop-title">Scientific Tools &amp; Evidence</div>
+          <button type="button" class="nasa-top-link nav-btn lab-item" data-view="metrics" role="menuitem">📊 Detection Metrics (M1–M4)</button>
+          <button type="button" class="nasa-top-link nav-btn lab-item" data-view="constellation" role="menuitem">🛰 Satellite Missions</button>
+          <button type="button" class="nasa-top-link nav-btn lab-item" data-view="hotspots" role="menuitem">🗺 2D Hotspot Map</button>
+          <button type="button" class="nasa-top-link nav-btn lab-item" data-view="decisions" role="menuitem">🔬 Decisions D1–D3</button>
+          <button type="button" class="nasa-top-link nav-btn lab-item" data-view="methodology" role="menuitem">📋 Methodology &amp; Audit</button>
+          <button type="button" class="nasa-top-link nav-btn lab-item" data-view="readiness" role="menuitem">🛡 AMFI-02 Data Readiness</button>
+          <button type="button" class="nasa-top-link nav-btn lab-item" data-view="amfi-science" role="menuitem">🧪 AMFI Discovery &amp; FWI</button>
+          <button type="button" class="nasa-top-link nav-btn lab-item" data-view="px-lab" role="menuitem">🧪 AMFI-PX Science Lab</button>
+        </div>
+      </div>
+
+      <button type="button" class="nasa-main-menu-btn" id="mainMenuToggleBtn" title="Mission Guide &amp; Constellation Overview">Mission Guide</button>
+
+      <button type="button" class="nasa-layers-fab" id="layersFabBtn" title="Map Layers, Region &amp; Exports" aria-label="Map Layers">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
+          <line x1="4" y1="6" x2="20" y2="6"></line>
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+          <line x1="4" y1="18" x2="20" y2="18"></line>
+        </svg>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ========================================================================
+       3. CLEAN UPPER-LEFT EXPLORER CAPTION (Zero Debug Stack)
+       ======================================================================== -->
+  <div class="nasa-bottom-left-hud">
+    <div class="nasa-bl-title-row">
+      <h1 class="nasa-bl-title" id="hudActiveLayerTitle">Earth from Orbit</h1>
+      <button type="button" class="nasa-bl-plus-btn" id="hudOpenOverviewBtn" title="Open Earth Intelligence Layers (Weather, Canadian FWI &amp; AMFI Readiness)">+</button>
+      <button type="button" class="ei-selected-pill" id="selectedLayersCountPill" title="Toggle Earth intelligence layers">2 layers</button>
+    </div>
+    <div class="nasa-bl-date" id="eyesHudDateReadout">Nov 7–13 · 1.35M spots · 4 sats</div>
+    <div class="ei-mode-banner" id="earthIntelModeBanner" style="display:none"></div>
+    <div class="nasa-left-event-callout" id="leftLatestEventCallout" title="Fly to active fire zone — click any glowing pin to inspect">
+      <span class="ev-dot"></span>
+      <span class="ev-headline" id="leftEventHeadline">Click any glowing fire pin to inspect</span>
+      <span class="ev-sub" id="leftEventSub" style="display:none"></span>
+    </div>
+    <div id="eyesHudStats" style="display:none"></div>
+
+    <!-- Floating Multi-Layer Earth Intelligence Selector ("Earth intelligence · Layers") -->
+    <aside class="ei-layers-popover" id="earthIntelLayersPopover" aria-label="Earth intelligence layers selector">
+      <div class="ei-layers-head">
+        <div>
+          <div class="ei-layers-kicker">EARTH INTELLIGENCE · LAYERS</div>
+          <div class="ei-layers-sub">Selected layers: <b id="earthIntelSelectedCount">2</b> · Scientific distinction enforced</div>
+        </div>
+        <button type="button" id="closeEarthIntelBtn" class="ei-close-btn" aria-label="Close Layers">✕</button>
+      </div>
+      <div class="ei-layers-scroll" id="earthIntelLayersBody"></div>
+      <div class="ei-layers-foot">
+        <span>Detections ≠ wildfires · FWI ≠ ignition prob. · AMFI-PX archive: no prediction layer.</span>
+        <button type="button" class="ei-foot-link" id="eiOpenReadinessDrawerBtn">AMFI-02 Gates ›</button>
+        <button type="button" class="ei-foot-link nav-btn" data-view="px-lab" style="margin-left:8px">AMFI-PX Archive ›</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ========================================================================
+       4. FLOATING FROSTED LAYERS POPOVER (Triggered by ☰ in Top Pill)
+       ======================================================================== -->
+  <aside class="nasa-layers-popover" id="layersPopover">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <b style="font-size:12.5px;letter-spacing:0.06em;text-transform:uppercase;color:#38BDF8">Earth &amp; Satellite Layers</b>
+      <button type="button" id="closeLayersPopoverBtn" style="background:transparent;border:none;color:#94A3B8;cursor:pointer;font-size:15px">✕</button>
+    </div>
+
+    <div class="hud-field-group">
+      <label class="hud-field-label" for="globalWindowSelect">Temporal Archive Window</label>
+      <select id="globalWindowSelect" class="hud-select">
+        <option value="2026-11" selected>Nov 07–13, 2026 Pilot (4 Active · 15 Subsets)</option>
+        <option value="2022-05">May 22–28, 2022 Archive (3 Active · 7 Subsets)</option>
+      </select>
+    </div>
+
+    <div class="hud-field-group">
+      <label class="hud-field-label" for="globalRegionSelect">Target Region (Camera Fly-To)</label>
+      <select id="globalRegionSelect" class="hud-select">
+        <option value="saf">Southern Africa (Primary Deep-Dive)</option>
+      </select>
+    </div>
+
+    <div class="hud-field-group">
+      <label class="hud-field-label" for="globalMetricSelect">Active Fire Vital Sign (Metric)</label>
+      <select id="globalMetricSelect" class="hud-select">
+        <option value="count" selected>M1: OBSERVED DETECTION COUNT</option>
+        <option value="clusters">M2c: SPATIAL_DETECTION_CLUSTER_COUNT (1 km)</option>
+        <option value="frp">M3: SUMMED OBSERVED FRP (MW)</option>
+        <option value="nadir_frp">M4c: NADIR_FILTERED_TOTAL_FRP (≤1.3× Nadir)</option>
+      </select>
+    </div>
+
+    <div class="hud-field-group">
+      <span class="hud-field-label">Globe Shader &amp; Geometry</span>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button type="button" class="btn-action" id="eyesMode3dBtn" style="flex:1">3D Globe</button>
+        <button type="button" class="btn-action" id="eyesMode2dBtn" style="flex:1">2D Map</button>
+        <button type="button" class="btn-action" id="eyesOrbitToggleBtn" style="flex:1">Orbits: ON</button>
+      </div>
+    </div>
+
+    <div class="hud-field-group" style="margin-bottom:4px">
+      <span class="hud-field-label">Audio &amp; Reproducible Exports</span>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button type="button" class="btn-action" id="playSonificationBtn" style="flex:1">🔊 Stereo Audio</button>
+        <button type="button" class="btn-action export-json-btn" style="flex:1">⬇ JSON</button>
+        <button type="button" class="btn-action export-csv-btn" style="flex:1">⬇ CSV</button>
+      </div>
+    </div>
+    <div id="sidebarContextSummary" style="margin-top:8px;font-size:11px;color:#94A3B8"></div>
+  </aside>
+
+  <!-- ========================================================================
+       5. ULTRA-SLIM 54PX BOTTOM HORIZON CAPSULE DOCK (Direction A)
+       ======================================================================== -->
+  <section class="firms-earth-scrubber-deck" id="firmsEarthDeck" aria-label="FIRMS Earth Historical Timeline Dock">
+    <!-- Hidden metadata spans preserved cleanly for telemetry sync -->
+    <span id="eyesHudTitle" style="display:none">Southern Africa (2026-11)</span>
+    <span id="deckPeriodLabel" style="display:none">November 2026</span>
+    <span id="deckMetricLabel" style="display:none">Detection / FRP</span>
+    <span id="deckProgressBarFill" style="display:none"></span>
+    <span id="bottomBarDateText" style="display:none">Nov 13, 2026</span>
+
+    <!-- Year Selection Popover (opens smoothly above the dock) -->
+    <div class="dock-popover dock-year-popover" id="yearPopover">
+      <div class="dock-pop-header">
+        <span class="mono" style="font-size:10.5px;color:#FDE68A;font-weight:700">TIME TRAVEL &amp; ARCHIVE YEARS</span>
+        <span class="mono" id="deckCenterDateLabel" style="font-size:10.5px;color:#94A3B8">2026 — 11 — 13</span>
+      </div>
+      <div class="eyes-year-track" id="eyesYearTrack" aria-label="Historical Coverage Scope & Year Selector">
+        <span class="eyes-year-group-tag benchmark" title="Full 8-day FIRMS MODIS & VIIRS detection CSV loaded">📊 CSV Benchmark:</span>
+        <button type="button" class="eyes-year-pill benchmark active" data-year="2026" title="Full 8-day Southern Africa FIRMS CSV window (Nov 7–14, 2026)">2026</button>
+        <button type="button" class="eyes-year-pill benchmark" data-year="2022" title="Full 8-day Southern Africa FIRMS CSV window (May 20–27, 2022)">2022</button>
+        <span class="eyes-year-group-tag casestudy" title="Curated historical event coordinates & documentary dossiers only (no full-year FIRMS grid)">📜 Case-Study Only:</span>
+        <button type="button" class="eyes-year-pill" data-year="2025">2025</button>
+        <button type="button" class="eyes-year-pill" data-year="2024">2024</button>
+        <button type="button" class="eyes-year-pill" data-year="2023">2023 · Lahaina</button>
+        <button type="button" class="eyes-year-pill" data-year="2021">2021 · Table Mtn</button>
+        <button type="button" class="eyes-year-pill" data-year="2020">2020</button>
+        <button type="button" class="eyes-year-pill" data-year="2017">2017 · Knysna</button>
+        <button type="button" class="eyes-year-pill" data-year="2015">2015 · Muizenberg</button>
+        <div class="eyes-year-coverage-note">Full 2000–present global archive not loaded; intermediate years carry curated sites only</div>
+      </div>
+    </div>
+
+    <!-- Satellites & Playback Settings Popover (opens smoothly above the dock) -->
+    <div class="dock-popover dock-sat-popover" id="satPopover">
+      <div class="dock-pop-header">
+        <span class="mono" style="font-size:10.5px;color:#7DD3FC;font-weight:700">OVERHEAD SATELLITES &amp; PLAYBACK</span>
+        <div style="display:flex;align-items:center;gap:6px">
+          <button type="button" class="btn-action" id="eyesAllDaysBtn" style="padding:2px 8px;font-size:10px">7d All</button>
+          <select id="eyesSpeedSelect" class="hud-select" style="width:auto;padding:2px 6px;font-size:10px">
+            <option value="1" selected>1×</option>
+            <option value="2">2×</option>
+            <option value="0.5">0.5×</option>
+          </select>
+        </div>
+      </div>
+      <div id="topbarPlatformPills" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+    </div>
+
+    <!-- Single-Row Ultra-Slim Horizon Capsule Controls (54px tall) -->
+    <div class="horizon-dock-row">
+      <div class="fe-transport-btns">
+        <button type="button" class="fe-step-btn" id="eyesPrevBtn" title="Step Back One Day">⏮</button>
+        <button type="button" class="fe-play-circle fe-play-sm" id="eyesRewindBtn" title="Animate Backwards in Time">◀</button>
+        <button type="button" class="fe-play-circle" id="eyesPlayBtn" title="Play Forward in Time">▶</button>
+        <button type="button" class="fe-step-btn" id="eyesNextBtn" title="Step Forward One Day">⏭</button>
+      </div>
+
+      <div class="dock-sep"></div>
+
+      <div class="temporal-mode-bar" role="group" aria-label="Temporal Intelligence Mode">
+        <button type="button" class="temporal-mode-pill" data-temporal-mode="historical" title="Historical detections + ERA5-Land Reanalysis (not forecast)">Historical</button>
+        <button type="button" class="temporal-mode-pill active" data-temporal-mode="live" title="Latest observations + Live ECMWF/GFS/ECCC weather &amp; FWI">Live</button>
+        <button type="button" class="temporal-mode-pill" data-temporal-mode="forecast" title="NWP Forecast Weather + Canadian FWI (AMFI-03 ignition remains blocked)">Forecast</button>
+      </div>
+      <div id="forecastLeadWrap" style="display:none;align-items:center;gap:4px">
+        <select id="forecastLeadSelect" class="hud-select" style="width:auto;padding:2px 6px;font-size:10px" title="Forecast Lead Time">
+          <option value="24" selected>+24h</option>
+          <option value="48">+48h</option>
+          <option value="72">+72h</option>
+        </select>
+      </div>
+
+      <button type="button" class="dock-chip dock-chip-amber mono" id="yearPopoverTrigger" title="Switch Year or Explore Historical Fire Stories">
+        <span class="dot" style="background:#34D399"></span>
+        <span id="activeYearChipLabel">Year: 2026</span>
+        <span style="color:#94A3B8">▾</span>
+      </button>
+
+      <div class="eyes-timeline-track" id="eyesTimelineTrack"></div>
+
+      <div class="dock-sep"></div>
+
+      <button type="button" class="dock-chip mono" id="satPopoverTrigger" title="Toggle Tracking Satellites &amp; Speed">
+        <span class="dot" style="background:#38BDF8"></span>
+        <span id="activeSatChipLabel">Satellites (4)</span>
+        <span style="color:#94A3B8">▾</span>
+      </button>
+
+      <div class="dock-clock mono" id="bottomBarTimeText" title="Local Solar Overpass Time">01:46 PM LST</div>
+
+      <div class="dock-icon-group">
+        <button type="button" class="nasa-icon-btn" id="bottomZoomInBtn" title="Zoom In to High-Res Satellite Surface" aria-label="Zoom In">＋</button>
+        <button type="button" class="nasa-icon-btn" id="bottomZoomOutBtn" title="Zoom Out to Orbital View" aria-label="Zoom Out">－</button>
+        <button type="button" class="nasa-icon-btn active" id="bottomToggleOrbitsBtn" title="Toggle Satellite Orbit Rings">🛰</button>
+        <button type="button" class="nasa-icon-btn" id="bottomToggleShaderBtn" title="Switch Sunlight vs Night IR View">☀</button>
+        <button type="button" class="nasa-icon-btn" id="bottomFullscreenBtn" title="Toggle Fullscreen">⛶</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       6. TRANSLUCENT GLASS HUD DRAWERS (SLIDE OVER 3D EARTH WHEN SELECTED)
+       ======================================================================== -->
+
+  <!-- DRAWER 1: MISSION OVERVIEW & INSTRUMENT TIMELINE -->
+  <section id="view-overview" class="nasa-glass-drawer view-section">
+    <div class="drawer-header">
+      <div>
+        <h2 class="drawer-header-title">Mission Guide &amp; Constellation Overview</h2>
+        <div class="drawer-header-sub" id="ovRegionLabel">Southern Africa · Clean 7-Day Window</div>
+      </div>
+      <button type="button" class="drawer-close-btn" data-close-drawer>✕ Return to 3D Earth</button>
+    </div>
+    <div class="drawer-body">
+      <div class="mono" style="font-size:11.5px;color:#38BDF8;margin-bottom:8px" id="ovPlatformLabel"></div>
+      <div class="nasa-bl-telemetry" id="ovHeroAgreementRow" style="margin-bottom:12px">
+        <span class="badge badge-info">Loading 1,354,650 Detections…</span>
+      </div>
+      <div class="kpi-grid-4">
+        <div class="kpi-box">
+          <div class="label">OBSERVED DETECTION COUNT (M1)</div>
+          <div class="val" id="ovKpiCount">—</div>
+          <div class="sub" id="ovKpiCountSub"></div>
+        </div>
+        <div class="kpi-box">
+          <div class="label">SPATIAL_DETECTION_CLUSTER_COUNT</div>
+          <div class="val" id="ovKpiClusters">—</div>
+          <div class="sub" id="ovKpiClustersSub"></div>
+        </div>
+        <div class="kpi-box">
+          <div class="label">SUMMED OBSERVED FRP (M3)</div>
+          <div class="val" id="ovKpiFrp">—</div>
+          <div class="sub" id="ovKpiFrpSub"></div>
+        </div>
+        <div class="kpi-box">
+          <div class="label">SPEARMAN RANK ρ (COUNT VS FRP)</div>
+          <div class="val" id="ovKpiRho">—</div>
+          <div class="sub" id="ovKpiRhoSub"></div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:14px">
+        <div class="card" style="margin-bottom:0">
+          <div class="label" style="font-size:10px;color:#38BDF8;font-weight:700">PEAK OBSERVED DETECTION COUNT DAY</div>
+          <div class="mono" style="font-size:20px;font-weight:800;margin:4px 0" id="ovPeakCountDate">—</div>
+          <div style="font-size:12px;color:#CBD5E1" id="ovPeakCountMeta"></div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="label" style="font-size:10px;color:#F59E0B;font-weight:700">PEAK SUMMED OBSERVED FRP DAY</div>
+          <div class="mono" style="font-size:20px;font-weight:800;margin:4px 0" id="ovPeakFrpDate">—</div>
+          <div style="font-size:12px;color:#CBD5E1" id="ovPeakFrpMeta"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">5-Instrument FIRMS Constellation Availability &amp; Overpass LST</h3>
+            <div class="card-subtitle">Explicit source-state hygiene: <code>FEED_EMPTY_IN_RETRIEVAL</code> is stored as <code>null</code> (never numerical <code>0</code>).</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Platform &amp; Sensor</th>
+                <th>Daytime LST</th>
+                <th>Retrieval State</th>
+                <th class="num">Observed Count</th>
+                <th class="num">Summed FRP</th>
+                <th>Top Count Day</th>
+                <th>Top FRP Day</th>
+              </tr>
+            </thead>
+            <tbody id="ovConstellationTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Archival Window Comparison: May 2022 (3 Sensors) vs. November 2026 (4 Sensors)</h3>
+            <div class="card-subtitle">Demonstrates how adding NOAA-21 and empty-feed S-NPP alters the active subset space from 7 to 15 coalitions.</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Window</th>
+                <th>Active Constellation</th>
+                <th class="num">Total Count</th>
+                <th class="num">Median/Day</th>
+                <th class="num">Summed FRP</th>
+                <th class="num">Median FRP/Day</th>
+                <th>Top Count Day</th>
+                <th>Top FRP Day</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="historicalComparisonTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DRAWER 2: VITAL SIGNS — METRIC INTELLIGENCE (M1, M2c, M3, M4c) -->
+  <section id="view-metrics" class="nasa-glass-drawer view-section">
+    <div class="drawer-header">
+      <div>
+        <h2 class="drawer-header-title">Vital Signs — Metric Intelligence &amp; Normalization Audit</h2>
+        <div class="drawer-header-sub">Comparing <code>OBSERVED DETECTION COUNT</code> (M1), <code>SPATIAL_DETECTION_CLUSTER_COUNT</code> (M2c), <code>SUMMED OBSERVED FRP</code> (M3), and <code>NADIR_FILTERED_TOTAL_FRP</code> (M4c)</div>
+      </div>
+      <button type="button" class="drawer-close-btn" data-close-drawer>✕ Return to 3D Earth</button>
+    </div>
+    <div class="drawer-body">
+      <div class="kpi-grid-4">
+        <div class="kpi-box">
+          <div class="label">M1 COUNT TOP DAY</div>
+          <div class="val" id="miCountTopDay">—</div>
+          <div class="sub">● Solid Cyan Line</div>
+        </div>
+        <div class="kpi-box">
+          <div class="label">M3 OBSERVED FRP TOP DAY</div>
+          <div class="val" id="miFrpTopDay">—</div>
+          <div class="sub">◆ Dashed Amber Line</div>
+        </div>
+        <div class="kpi-box">
+          <div class="label">M4c NADIR FRP TOP DAY</div>
+          <div class="val" id="miNadirTopDay">—</div>
+          <div class="sub">Scan ≤ 1.3× Nadir (CORR-01)</div>
+        </div>
+        <div class="kpi-box">
+          <div class="label">TIE-AVERAGED SPEARMAN ρ</div>
+          <div class="val" id="miSpearmanVal">—</div>
+          <div class="sub" id="miDisagreementVerdict"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Dual-Estimand Daily Trajectory: Detection Count vs. Summed Observed FRP (MW)</h3>
+            <div class="card-subtitle">Non-color-alone encoding: Solid ● circles = Detection Count; Dashed ◆ diamonds = Radiative Power (MW).</div>
+          </div>
+        </div>
+        <canvas id="metricDualChart" style="width:100%;height:270px;display:block"></canvas>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Daily Rank Bump Comparison (#1 = Peak Activity Day)</h3>
+            <div class="card-subtitle">Vertical pink bars highlight dates where frequency rank and radiative-energy rank diverge.</div>
+          </div>
+        </div>
+        <canvas id="metricRankBumpChart" style="width:100%;height:230px;display:block"></canvas>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Daily Metric &amp; Rank Table (M1 Count, M3 FRP, M4c Nadir-Filtered FRP)</h3>
+            <div class="card-subtitle">Includes tie-averaged descending ranks per metric.</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Acquisition Date</th>
+                <th class="num">M1 Detection Count</th>
+                <th class="num">Count Rank</th>
+                <th class="num">M3 Summed FRP (MW)</th>
+                <th class="num">FRP Rank</th>
+                <th class="num">M4c Nadir FRP (MW)</th>
+                <th class="num">M4c Rank</th>
+                <th class="num">Rank Shift (Δ)</th>
+              </tr>
+            </thead>
+            <tbody id="miDailyComparisonTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card" style="border-left:3px solid #F59E0B">
+        <h3 class="card-title">Phase 4 Normalization Audit Summary (Southern Africa 7-Day Benchmark)</h3>
+        <div class="table-wrap" style="margin-top:8px">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Method ID</th>
+                <th>Estimand Definition</th>
+                <th class="num">J1 / MODIS Ratio</th>
+                <th class="num">MODIS–J1 ρ</th>
+                <th class="num">J1–J2 ρ</th>
+                <th>Validation Verdict</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono"><b>M1</b></td>
+                <td><code>OBSERVED DETECTION COUNT</code> (Raw rows)</td>
+                <td class="num">5.276×</td>
+                <td class="num">0.6429</td>
+                <td class="num">0.8571</td>
+                <td><span class="badge badge-info">BASELINE FREQUENCY</span></td>
+              </tr>
+              <tr>
+                <td class="mono"><b>M2c</b></td>
+                <td><code>SPATIAL_DETECTION_CLUSTER_COUNT</code> (1 km Haversine CC · CORR-02)</td>
+                <td class="num">4.235×</td>
+                <td class="num">0.5357</td>
+                <td class="num"><b>0.9643</b></td>
+                <td><span class="badge badge-ok">VALIDATED CLUSTER COUNT</span></td>
+              </tr>
+              <tr>
+                <td class="mono"><b>M3</b></td>
+                <td><code>SUMMED OBSERVED FRP</code> (Total MW)</td>
+                <td class="num"><b>2.018×</b></td>
+                <td class="num"><b>0.8214</b></td>
+                <td class="num">0.8571</td>
+                <td><span class="badge badge-ok">PRIMARY RADIATIVE ESTIMAND</span></td>
+              </tr>
+              <tr>
+                <td class="mono"><b>M4c</b></td>
+                <td><code>NADIR_FILTERED_TOTAL_FRP</code> (scan ≤ 1.3× nadir · CORR-01)</td>
+                <td class="num"><b>2.392×</b></td>
+                <td class="num"><b>0.7857</b></td>
+                <td class="num">0.7500</td>
+                <td><span class="badge badge-ok">VALIDATED NADIR CONTROL</span></td>
+              </tr>
+              <tr>
+                <td class="mono"><b>M4 (Orig)</b></td>
+                <td>Unclustered Per-Pixel $\sum \text{FRP}_i / (\text{scan}_i \times \text{track}_i)$</td>
+                <td class="num" style="color:#FB7185"><b>17.008×</b></td>
+                <td class="num" style="color:#FB7185">0.4643</td>
+                <td class="num" style="color:#FB7185">0.4643</td>
+                <td><span class="badge badge-danger">FALSIFIED &amp; REMOVED (CORR-01)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DRAWER 3: MISSIONS — CONSTELLATION LAB (15-SUBSET MATRIX & PIVOTAL INFLUENCE) -->
+  <section id="view-constellation" class="nasa-glass-drawer view-section">
+    <div class="drawer-header">
+      <div>
+        <h2 class="drawer-header-title">Missions — 15-Subset Constellation Lab &amp; Pivotal Influence ($I_p$)</h2>
+        <div class="drawer-header-sub">Click any row in the subset matrix to update the 3D Earth and active satellite constellation immediately.</div>
+      </div>
+      <button type="button" class="drawer-close-btn" data-close-drawer>✕ Return to 3D Earth</button>
+    </div>
+    <div class="drawer-body">
+      <div class="card">
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px" id="clUnionBadges"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px" id="clClassificationBadges"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Complete Non-Empty Platform Subset × Metric Matrix ($2^K - 1$ Subsets)</h3>
+            <div class="card-subtitle">Preserves all tied maximum dates ($\text{top}(S)$) and evaluates Count vs. FRP agreement per coalition.</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Satellite Coalition ($S$)</th>
+                <th class="num">Total Detections</th>
+                <th class="num">Summed FRP (MW)</th>
+                <th>Top Count Day(s)</th>
+                <th>Top FRP Day(s)</th>
+                <th>Top Nadir FRP Day</th>
+                <th class="num">Spearman ρ</th>
+                <th>Metric Status</th>
+              </tr>
+            </thead>
+            <tbody id="clSubsetMatrixBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Pivotal-Subset Platform Influence ($I_p$) across Non-Singleton Coalitions ($|S| &gt; 1$)</h3>
+            <div class="card-subtitle">Measures the exact fraction of coalitions where adding platform $p$ alters the peak day set $\text{top}(S) \ne \text{top}(S \setminus \{p\})$.</div>
+          </div>
+        </div>
+        <canvas id="influenceBarChart" style="width:100%;height:220px;display:block;margin-bottom:12px"></canvas>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Platform $p$</th>
+                <th class="num">Count $I_p$ (Num/Den)</th>
+                <th>Leave-One-Out Pooled</th>
+                <th>Pivotal Count Transitions</th>
+                <th class="num">FRP $I_p$ (Num/Den)</th>
+                <th>Pivotal FRP Transitions</th>
+              </tr>
+            </thead>
+            <tbody id="clInfluenceTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DRAWER 4: EVENTS & SPATIAL HOTSPOT INTELLIGENCE (SOUTHERN AFRICA MULTI-SCALE) -->
+  <section id="view-hotspots" class="nasa-glass-drawer view-section">
+    <div class="drawer-header">
+      <div>
+        <h2 class="drawer-header-title">Events &amp; Multi-Scale Spatial Hotspot Intelligence</h2>
+        <div class="drawer-header-sub">Southern Africa 144,958 Clean Detections across 0.05° to 1.0° Spatial Grids &amp; 3 Physical Fire Regimes</div>
+      </div>
+      <button type="button" class="drawer-close-btn" data-close-drawer>✕ Return to 3D Earth</button>
+    </div>
+    <div class="drawer-body">
+      <div class="card" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:180px">
+          <label class="hud-field-label" for="hotspotResSelect">Spatial Grid Resolution</label>
+          <select id="hotspotResSelect" class="hud-select">
+            <option value="1.0deg" selected>1.0° × 1.0° (~111 km Regional Grid)</option>
+            <option value="0.5deg">0.5° × 0.5° (~55 km Mesoscale Grid)</option>
+            <option value="0.25deg">0.25° × 0.25° (~28 km District Grid)</option>
+            <option value="0.1deg">0.10° × 0.10° (~11 km Landscape Grid)</option>
+            <option value="0.05deg">0.05° × 0.05° (~5.5 km Local Perimeter Grid)</option>
+          </select>
+        </div>
+        <div style="flex:1;min-width:180px">
+          <label class="hud-field-label" for="hotspotMetricSelect">Hotspot Ranking Estimand</label>
+          <select id="hotspotMetricSelect" class="hud-select">
+            <option value="count" selected>Rank by Observed Detection Count (M1)</option>
+            <option value="clusters">Rank by 1 km Geodesic Cluster Count (M2c)</option>
+            <option value="frp">Rank by Summed Observed FRP in MW (M3)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card">
+        <canvas id="hotspotMapCanvas" style="width:100%;height:340px;display:block;border-radius:8px"></canvas>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3 class="card-title" style="margin-bottom:8px;color:#38BDF8">Top 10 Cells by Detection Count (M1)</h3>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th class="num">Rank</th>
+                  <th>Cell ID</th>
+                  <th class="num">Count</th>
+                  <th class="num">1km Clusters</th>
+                  <th class="num">FRP (MW)</th>
+                  <th class="num">Day %</th>
+                </tr>
+              </thead>
+              <tbody id="hsCountTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title" style="margin-bottom:8px;color:#F59E0B">Top 10 Cells by Summed Observed FRP (M3)</h3>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th class="num">Rank</th>
+                  <th>Cell ID</th>
+                  <th class="num">FRP (MW)</th>
+                  <th class="num">M4c Nadir</th>
+                  <th class="num">Count</th>
+                  <th class="num">Intensity</th>
+                </tr>
+              </thead>
+              <tbody id="hsFrpTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DRAWER 5: OPERATIONAL DECISION ANALYSIS (D1, D2, D3) -->
+  <section id="view-decisions" class="nasa-glass-drawer view-section">
+    <div class="drawer-header">
+      <div>
+        <h2 class="drawer-header-title">Operational Decision Stability Evaluators (D1, D2 &amp; D3)</h2>
+        <div class="drawer-header-sub">Distinguishing decisions sensitive to sensor/metric choice from decisions invariant across the constellation.</div>
+      </div>
+      <button type="button" class="drawer-close-btn" data-close-drawer>✕ Return to 3D Earth</button>
+    </div>
+    <div class="drawer-body">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Decision D1: Peak-Activity Alert Timing &amp; Top-2 Window Stability</h3>
+            <div class="card-subtitle">Evaluates whether single-day peak ranking vs. 48-hour alert windows flip across platforms or metrics.</div>
+          </div>
+          <span class="badge badge-warn">SINGLE-DAY SENSITIVE · TOP-2 ROBUST</span>
+        </div>
+        <div id="d1SummaryContent"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Decision D2: Spatial Resource Prioritization (Frequency vs. Radiative Energy)</h3>
+            <div class="card-subtitle">Comparing top cells in Southern Africa across 5 grid scales (0.05° to 1.0°).</div>
+          </div>
+          <span class="badge badge-info">REGIME-DEPENDENT</span>
+        </div>
+        <div class="mono" style="font-size:12px;line-height:1.6;color:#CBD5E1">
+          • <b>1.0° Cell <code>(-25, 22)</code> (Molopo Kalahari):</b> #1 by Observed Detection Count (<b>3,972</b> detections, 75.5% nighttime persistent thermal perimeter).<br>
+          • <b>1.0° Cell <code>(-24, 24)</code> (Central Kalahari):</b> #1 by Summed Observed FRP (<b>34,932.2 MW</b>, 15.17 MW/detection intense flaming front).<br>
+          • <b>1.0° Cell <code>(-11, 39)</code> (Northern Mozambique):</b> #1 by 1 km Geodesic Cluster Count (<b>497</b> distinct ignition clusters, 95.3% daytime agricultural clearing).
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Decision D3: Weekly Fire-Activity Trajectory (Early 3 Days vs. Late 3 Days)</h3>
+            <div class="card-subtitle">In Southern Africa (Nov 2026), all 15 platform subsets and all 4 metrics unanimously confirm a declining weekly trajectory.</div>
+          </div>
+          <span class="badge badge-ok">100% SUBSET &amp; METRIC UNANIMITY</span>
+        </div>
+        <div class="mono" style="font-size:12px;margin-bottom:10px;color:#E2E8F0" id="d3PooledSummary"></div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Platform</th>
+                <th>Early Window (3d)</th>
+                <th>Late Window (3d)</th>
+                <th class="num">Count (Early → Late)</th>
+                <th class="num">Count Δ%</th>
+                <th class="num">FRP (Early → Late)</th>
+                <th class="num">FRP Δ%</th>
+                <th>Trajectory Verdict</th>
+              </tr>
+            </thead>
+            <tbody id="d3TrajectoryTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DRAWER 6: DATA COVERAGE, METHODOLOGY & LIVE CSV INGESTION -->
+  <section id="view-methodology" class="nasa-glass-drawer view-section">
+    <div class="drawer-header">
+      <div>
+        <h2 class="drawer-header-title">Data Provenance, Mandatory Corrections (CORR-01..05) &amp; Live CSV Audit</h2>
+        <div class="drawer-header-sub">1,354,650 real NASA FIRMS detections audited across 13 on-disk files on D: drive.</div>
+      </div>
+      <button type="button" class="drawer-close-btn" data-close-drawer>✕ Return to 3D Earth</button>
+    </div>
+    <div class="drawer-body">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Live FIRMS CSV Ingestion &amp; CORR-03 Hygiene Verifier (<code>/api/ingest-csv</code>)</h3>
+            <div class="card-subtitle">Test header-only 112-byte <code>FEED_EMPTY_IN_RETRIEVAL</code> detection, 8-date partial trailing UTC quarantine, or upload a local FIRMS CSV.</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+          <button type="button" class="btn-action" id="testEmptyFeedBtn">Test 112-Byte Empty Feed (Suomi-NPP → NULL)</button>
+          <button type="button" class="btn-action" id="testPartialDayBtn">Test 8-Date Rolling File (Quarantines 2026-11-14)</button>
+          <label class="btn-action" style="cursor:pointer">
+            Upload Local FIRMS CSV
+            <input type="file" id="localCsvFileInput" accept=".csv" style="display:none" />
+          </label>
+        </div>
+        <div id="csvIngestionResultBox" class="card" style="background:rgba(2,6,23,0.85);margin-bottom:0;padding:10px;font-size:11.5px;color:#38BDF8">
+          Click a verification button above or upload a local FIRMS CSV to run SHA-256 &amp; CORR-03 ingestion checks.
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title" style="margin-bottom:10px">5 Mandatory Validation Corrections Enforced in Production</h3>
+        <div id="methodologyCorrectionsList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Floating Earth Intelligence Legend Bar -->
+  <div id="earthIntelLegend" class="ei-legend-bar-wrap" style="display:none"></div>
+
+  <!-- Clickable Grid / Hex Cell Evidence Inspector -->
+  <aside id="intelEvidencePopup" class="ei-evidence-popup" aria-label="Scientific Grid Evidence Inspector">
+    <div class="recon-header">
+      <div>
+        <h3 class="recon-title" id="intelEvidenceTitle">Grid Cell Evidence</h3>
+        <div class="recon-sub" id="intelEvidenceSub">—</div>
+      </div>
+      <button type="button" class="drawer-close-btn" id="closeIntelEvidenceBtn" style="padding:4px 9px;font-size:11px">✕ Close</button>
+    </div>
+    <div id="intelEvidenceBody" class="ei-evidence-body"></div>
+  </aside>
+
+  <!-- DRAWER 7: AMFI-02 DATA READINESS & PROSPECTIVE GATE SCORECARD -->
+  <section id="view-readiness" class="nasa-glass-drawer view-section">
+    <div class="drawer-header">
+      <div>
+        <h2 class="drawer-header-title">🛡 AMFI-02 Data Readiness &amp; Prospective Prediction Gates</h2>
+        <div class="drawer-header-sub">Transparent audit of ignition truth, satellite overpass coverage, ERA5 weather, reforecasts, and target registration.</div>
+      </div>
+      <button type="button" class="drawer-close-btn" data-close-drawer>✕ Return to 3D Earth</button>
+    </div>
+    <div class="drawer-body">
+      <div class="kpi-grid-4" id="readinessKpiRow"></div>
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Five Mandatory Gates Before AMFI-03 Prospective Ignition Modeling Can Start</h3>
+            <div class="card-subtitle">A NO-GO or PARTIAL gate verdict protects the science: ungrounded ignition claims are blocked cleanly.</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Gate</th><th>Requirement</th><th>Status</th><th>Evidence &amp; Gap</th></tr>
+            </thead>
+            <tbody id="readinessGatesBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Complete 32-Item Readiness Matrix (R01–R32 · <code>amfi_02_data_readiness</code>)</h3>
+            <div class="card-subtitle">Distinguishing acquired benchmark catalogs vs. missing ignition/observation/forecast datasets.</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>ID</th><th>Objective</th><th>Data Need</th><th>Candidate Source</th><th>Access Status</th><th>Notes</th></tr>
+            </thead>
+            <tbody id="readinessMatrixBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="acquisitionAuditContainer"></div>
+    </div>
+  </section>
+
+  <!-- DRAWER 8: AMFI DISCOVERY ARCHIVE (AMFI-01, D-AMFI-01, B3-FWI & AMFI-03) -->
+  <section id="view-amfi-science" class="nasa-glass-drawer view-section">
+    <div class="drawer-header">
+      <div>
+        <h2 class="drawer-header-title">🧪 AMFI Discovery Archive, Canadian FWI &amp; Scientific Guardrails</h2>
+        <div class="drawer-header-sub">Separating Observations (FIRMS), Environmental Danger (FWI), Documented Records (D-AMFI-01) &amp; Blocked Prediction (AMFI-03).</div>
+      </div>
+      <button type="button" class="drawer-close-btn" data-close-drawer>✕ Return to 3D Earth</button>
+    </div>
+    <div class="drawer-body" id="amfiScienceCardsContainer">
+      <div class="mono" style="color:#94A3B8;padding:20px">Loading AMFI scientific artifacts…</div>
+    </div>
+  </section>
+
+  <!-- DRAWER 9: AMFI-PX CLOSED SEARCH ARCHIVE -->
+  <section id="view-px-lab" class="nasa-glass-drawer view-section">
+    <div class="drawer-header">
+      <div>
+        <h2 class="drawer-header-title">🧪 AMFI-PX Science Lab — Closed Search Archive</h2>
+        <div class="drawer-header-sub">13 exploratory rounds · no operational champion · PX-D-02 retained as a synthetic principle · no PX probabilities are drawn on the globe.</div>
+      </div>
+      <button type="button" class="drawer-close-btn" data-close-drawer>✕ Return to 3D Earth</button>
+    </div>
+    <div class="drawer-body" id="amfiPxLabContainer">
+      <div class="mono" style="color:#94A3B8;padding:20px">Loading AMFI-PX archive…</div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       6B. ZOOM-INTO-FIRE SATELLITE RECONNAISSANCE IMAGERY POP-UP CARD
+       ======================================================================== -->
+  <aside id="fireReconPopup" class="fire-recon-popup" aria-label="Satellite Observation & Fire Event Reconnaissance">
+    <div class="recon-header">
+      <div>
+        <h3 class="recon-title" id="reconZoneTitle">Molopo Kalahari Fire Perimeter</h3>
+        <div class="recon-sub" id="reconZoneSub">Southern Africa Focus · (-24.50°, 22.50°)</div>
+      </div>
+      <button type="button" class="drawer-close-btn" id="closeReconPopupBtn" style="padding:4px 9px;font-size:11px">⤢ Zoom Out</button>
+    </div>
+
+    <div class="recon-viewport">
+      <canvas id="reconImageryCanvas" width="440" height="250"></canvas>
+    </div>
+
+    <div class="recon-band-tabs">
+      <button type="button" class="recon-band-btn active" data-recon-band="ground_photo">📸 Fire Photo</button>
+      <button type="button" class="recon-band-btn" data-recon-band="true_color">🛰 Incident Sat</button>
+      <button type="button" class="recon-band-btn" data-recon-band="swir_fire">🔥 SWIR</button>
+      <button type="button" class="recon-band-btn" data-recon-band="sensor_footprint">📐 MODIS vs VIIRS</button>
+    </div>
+
+    <div class="recon-stats-grid">
+      <div class="recon-stat-cell">
+        <div class="k">SWATH DETECTIONS</div>
+        <div class="v" id="reconStatObs">—</div>
+      </div>
+      <div class="recon-stat-cell">
+        <div class="k">OBSERVED FRP</div>
+        <div class="v" style="color:#FBBF24" id="reconStatFrp">—</div>
+      </div>
+      <div class="recon-stat-cell">
+        <div class="k">SENSOR SPLIT</div>
+        <div class="v" style="font-size:11px;color:#38BDF8" id="reconStatRatio">—</div>
+      </div>
+    </div>
+
+    <div class="recon-footer">
+      <div style="flex:1;min-width:0">
+        <div class="mono" style="font-size:10px;color:#94A3B8;line-height:1.35;margin-bottom:6px" id="reconStatPeakNote">—</div>
+        <button type="button" class="btn-action active" id="reconOpenStoryBtn" style="display:none;padding:4px 10px;font-size:11px;color:#FBBF24;border-color:#F59E0B">📜 Open Full Fire Story ›</button>
+      </div>
+      <div style="display:flex;gap:5px;flex-shrink:0">
+        <button type="button" class="btn-action" id="reconPrevZoneBtn" style="padding:4px 8px;font-size:10.5px">‹ Area</button>
+        <button type="button" class="btn-action" id="reconNextZoneBtn" style="padding:4px 8px;font-size:10.5px">Area ›</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========================================================================
+       6C. FIRE STORIES: HISTORICAL FIRE DOCUMENTARY ARCHIVE (FIRE-STORIES-01)
+       ======================================================================== -->
+  <section id="view-fire-stories" class="nasa-glass-drawer view-section">
+    <div class="drawer-header">
+      <div>
+        <h2 class="drawer-header-title">📜 Fire Stories: Human History Behind Satellite Observations</h2>
+        <div class="drawer-header-sub">FIRE-STORIES-01 · Verified Historical Events, Audio Documentary &amp; Official Investigation Evidence</div>
+      </div>
+      <button type="button" class="drawer-close-btn" data-close-drawer>✕ Return to 3D Earth</button>
+    </div>
+    <div class="drawer-body" id="fireStoriesContainer">
+      <div class="mono" style="color:#94A3B8;padding:20px">Loading curated Fire Stories archive…</div>
+    </div>
+  </section>
+
+  <div id="appToast" class="app-toast"></div>
+  <div id="globalErrorBanner" style="display:none;position:fixed;top:70px;left:20px;z-index:90;background:#991B1B;color:#FFF;padding:10px 14px;border-radius:8px"></div>
+
+  <!-- Scripts -->
+  <script src="js/globe3d.js"></script>
+  <script src="js/fire_imagery.js"></script>
+  <script src="js/fire_stories.js"></script>
+  <script src="js/map2d.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/earth_intelligence.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+{
+  "regions": [
+    {
+      "id": "saf",
+      "name": "Southern Africa",
+      "macro": "Afro-Eurasia",
+      "lat_min": -35,
+      "lat_max": -5,
+      "lon_min": 10,
+      "lon_max": 52,
+      "center": [
+        -20.0,
+        28.0
+      ],
+      "zoom": 3.2
+    },
+    {
+      "id": "nam_w",
+      "name": "Western North America",
+      "macro": "Americas",
+      "lat_min": 25,
+      "lat_max": 70,
+      "lon_min": -170,
+      "lon_max": -100,
+      "center": [
+        45.0,
+        -120.0
+      ],
+      "zoom": 2.6
+    },
+    {
+      "id": "nam_e",
+      "name": "Eastern North America",
+      "macro": "Americas",
+      "lat_min": 25,
+      "lat_max": 70,
+      "lon_min": -100,
+      "lon_max": -50,
+      "center": [
+        42.0,
+        -82.0
+      ],
+      "zoom": 2.6
+    },
+    {
+      "id": "cam_car",
+      "name": "Central America & Caribbean",
+      "macro": "Americas",
+      "lat_min": 5,
+      "lat_max": 25,
+      "lon_min": -120,
+      "lon_max": -55,
+      "center": [
+        16.0,
+        -88.0
+      ],
+      "zoom": 3.0
+    },
+    {
+      "id": "sam_n",
+      "name": "Northern South America / Amazon",
+      "macro": "Americas",
+      "lat_min": -15,
+      "lat_max": 12,
+      "lon_min": -85,
+      "lon_max": -34,
+      "center": [
+        -4.0,
+        -60.0
+      ],
+      "zoom": 2.8
+    },
+    {
+      "id": "sam_s",
+      "name": "Southern South America",
+      "macro": "Americas",
+      "lat_min": -56,
+      "lat_max": -15,
+      "lon_min": -80,
+      "lon_max": -34,
+      "center": [
+        -28.0,
+        -60.0
+      ],
+      "zoom": 2.8
+    },
+    {
+      "id": "eur_w",
+      "name": "Western & Central Europe",
+      "macro": "Afro-Eurasia",
+      "lat_min": 35,
+      "lat_max": 72,
+      "lon_min": -25,
+      "lon_max": 30,
+      "center": [
+        48.0,
+        10.0
+      ],
+      "zoom": 2.8
+    },
+    {
+      "id": "eur_e_rus",
+      "name": "Eastern Europe & Boreal Russia",
+      "macro": "Afro-Eurasia",
+      "lat_min": 45,
+      "lat_max": 75,
+      "lon_min": 30,
+      "lon_max": 180,
+      "center": [
+        58.0,
+        90.0
+      ],
+      "zoom": 2.0
+    },
+    {
+      "id": "naf_med",
+      "name": "North Africa & Mediterranean",
+      "macro": "Afro-Eurasia",
+      "lat_min": 18,
+      "lat_max": 37,
+      "lon_min": -20,
+      "lon_max": 40,
+      "center": [
+        28.0,
+        12.0
+      ],
+      "zoom": 2.8
+    },
+    {
+      "id": "waf",
+      "name": "West & Central Africa Savanna",
+      "macro": "Afro-Eurasia",
+      "lat_min": -5,
+      "lat_max": 18,
+      "lon_min": -20,
+      "lon_max": 30,
+      "center": [
+        7.0,
+        8.0
+      ],
+      "zoom": 3.0
+    },
+    {
+      "id": "eaf",
+      "name": "East Africa & Horn",
+      "macro": "Afro-Eurasia",
+      "lat_min": -5,
+      "lat_max": 18,
+      "lon_min": 30,
+      "lon_max": 52,
+      "center": [
+        6.0,
+        39.0
+      ],
+      "zoom": 3.2
+    },
+    {
+      "id": "me_cas",
+      "name": "Middle East & Central Asia",
+      "macro": "Asia",
+      "lat_min": 12,
+      "lat_max": 45,
+      "lon_min": 35,
+      "lon_max": 90,
+      "center": [
+        32.0,
+        58.0
+      ],
+      "zoom": 2.6
+    },
+    {
+      "id": "sas",
+      "name": "South Asia",
+      "macro": "Asia",
+      "lat_min": 5,
+      "lat_max": 36,
+      "lon_min": 65,
+      "lon_max": 92,
+      "center": [
+        22.0,
+        79.0
+      ],
+      "zoom": 3.2
+    },
+    {
+      "id": "eas",
+      "name": "East Asia",
+      "macro": "Asia",
+      "lat_min": 20,
+      "lat_max": 50,
+      "lon_min": 92,
+      "lon_max": 148,
+      "center": [
+        35.0,
+        115.0
+      ],
+      "zoom": 2.6
+    },
+    {
+      "id": "sea",
+      "name": "Southeast Asia",
+      "macro": "Asia",
+      "lat_min": -11,
+      "lat_max": 22,
+      "lon_min": 92,
+      "lon_max": 142,
+      "center": [
+        6.0,
+        112.0
+      ],
+      "zoom": 2.8
+    },
+    {
+      "id": "aus_pac",
+      "name": "Australia & Pacific",
+      "macro": "Pacific",
+      "lat_min": -50,
+      "lat_max": -10,
+      "lon_min": 110,
+      "lon_max": 180,
+      "center": [
+        -24.0,
+        135.0
+      ],
+      "zoom": 2.8
+    }
+  ]
+}

@@ -1,0 +1,674 @@
+{
+  "feature_id": "FIRE-STORIES-01",
+  "schema_version": "1.2.0",
+  "story_count": 4,
+  "hard_limit": 5,
+  "narration_policy": "Original documentary tracks use natural neural narration explicitly labeled AI_GENERATED_NARRATION; official news broadcasts are streamed externally via embedded broadcaster links (never scraped/copied).",
+  "provenance_policy": "All photographs and satellite products carry explicit provenance classification (VERIFIED_INCIDENT_PHOTO vs ILLUSTRATIVE_BIOME_FIRE; INCIDENT_DATE_TRUE_COLOR vs SWIR_721_FALSE_COLOR_COMPOSITE vs LANDSAT8_OLI_TRUE_COLOR vs SENTINEL2_L2A_TRUE_COLOR vs REPRESENTATIVE_REGIONAL_SWATH).",
+  "stories": [
+    {
+      "story_id": "FIRE-STORY-001",
+      "title": "Table Mountain & UCT Library Wildfire",
+      "subtitle": "Devil's Peak Ignition, Historic Loss, and Ongoing Investigation (April 2021)",
+      "year": 2021,
+      "country": "South Africa",
+      "region": "Western Cape \u2014 Table Mountain National Park & Rondebosch, Cape Town",
+      "lat": -33.9522,
+      "lon": 18.4589,
+      "start_date": "2021-04-18",
+      "end_date": "2021-04-20",
+      "ignition_time": "2021-04-18T08:45+02:00 (estimated outbreak above Philip Kgosana Drive)",
+      "burned_area_ha": 600,
+      "burned_area_note": "More than 600 hectares reported across Table Mountain National Park slopes and University of Cape Town edge.",
+      "cause_status": "PROBABLE_CAUSE",
+      "cause_label": "Under Investigation \u2014 Natural/Accidental Causes Ruled Out; Compelling Evidence of Malicious Act (Perpetrator Unestablished)",
+      "voice_id": "en-ZA-LukeNeural",
+      "early_reporting": "Early Sunday news bulletins and an initial police arrest on 18 April 2021 focused on suspicion of an unattended roadside cooking fire near Philip Kgosana Drive.",
+      "official_conclusion": "SANParks reported that the independent investigation led by Rob Erasmus (Enviro Wildfire Services) ruled out natural causes and accidental or negligent causes, clearing the initial suspect. CCTV and site examination noted a white vehicle stopping briefly near Devil's Peak before smoke emerged; SANParks stated there was compelling evidence suggesting a malicious act, which remained under ongoing investigation. Neither a perpetrator nor deliberate ignition has been conclusively established in public judicial findings.",
+      "what_remains_unknown": "No individual perpetrator has been identified or convicted in reviewed public judicial summaries, and final criminal attribution remains unestablished.",
+      "human_impact": "Evacuation of 4,000+ University of Cape Town students; destruction of Rhodes Memorial Restaurant, Mostert's Mill (1796), and UCT Jagger Library Special Collections reading room; severe smoke injuries to firefighters.",
+      "satellite_linkage": {
+        "match_status": "VERIFIED_EVENT_MATCH",
+        "constellation": "Terra MODIS & Suomi NPP / NOAA-20 VIIRS + NASA GIBS True Color",
+        "observation_date": "2021-04-18",
+        "note": "NASA Worldview / GIBS Terra MODIS observation on 2021-04-18 shows a clear smoke plume sweeping south-eastward off Table Mountain over False Bay; outside the 2022/2026 statistical CSV benchmark window."
+      },
+      "images": {
+        "ground": "assets/incidents/table_mountain_2021_ground2.jpg",
+        "ground_alt": "assets/incidents/table_mountain_2021_uct_ground.jpg",
+        "satellite": "assets/incidents/table_mountain_2021_sat.jpg",
+        "swir": "assets/incidents/table_mountain_2021_swir.jpg"
+      },
+      "photo_provenance": {
+        "primary": {
+          "file": "assets/incidents/table_mountain_2021_ground2.jpg",
+          "commons_title": "File:2021 Table Mountain fire 6.jpg",
+          "creator": "axxter99",
+          "capture_date": "2021-04-18 14:59:39",
+          "license": "CC BY-SA 4.0",
+          "provenance_class": "VERIFIED_INCIDENT_PHOTO",
+          "note": "Verified on-location Table Mountain cliff flame & smoke photograph captured on the afternoon of ignition."
+        },
+        "secondary": {
+          "file": "assets/incidents/table_mountain_2021_uct_ground.jpg",
+          "commons_title": "File:2021 Table Mountain fire 3.jpg",
+          "creator": "axxter99",
+          "capture_date": "2021-04-18 14:57:27",
+          "license": "CC BY-SA 4.0",
+          "provenance_class": "VERIFIED_INCIDENT_PHOTO",
+          "note": "Verified on-location Table Mountain cliff fire and ascending smoke plume captured on 18 April 2021."
+        }
+      },
+      "satellite_provenance": {
+        "true_color": {
+          "file": "assets/incidents/table_mountain_2021_sat.jpg",
+          "product_type": "INCIDENT_DATE_TRUE_COLOR",
+          "sensor": "NASA EOSDIS GIBS Terra MODIS CorrectedReflectance TrueColor",
+          "acquisition_date": "2021-04-18",
+          "note": "Timestamped satellite observation on the day of outbreak showing smoke plume over False Bay (~250 m\u20131 km optical product)."
+        },
+        "swir": {
+          "file": "assets/incidents/table_mountain_2021_swir.jpg",
+          "product_type": "SWIR_721_FALSE_COLOR_COMPOSITE",
+          "sensor": "NASA EOSDIS GIBS Terra MODIS Bands 7-2-1",
+          "acquisition_date": "2021-04-18",
+          "note": "Shortwave-infrared false-color observation highlighting thermal anomalies and burn scar contrast through smoke."
+        }
+      },
+      "news_broadcasts": [
+        {
+          "broadcaster": "SABC News",
+          "oembed_channel": "SABC News",
+          "title": "Battle to contain Cape Town blaze continues",
+          "date": "2021-04-19",
+          "youtube_id": "VxC3EurpBis",
+          "url": "https://www.youtube.com/watch?v=VxC3EurpBis",
+          "hosting": "EXTERNAL_PUBLISHER_EMBED_ONLY",
+          "verification_status": "OEMBED_VERIFIED_2026_11_14",
+          "note": "Original SABC News broadcast streamed directly from SABC News official YouTube channel."
+        },
+        {
+          "broadcaster": "SABC News",
+          "oembed_channel": "SABC News",
+          "title": "Table Mountain National Park fires were started deliberately: Authorities",
+          "date": "2021-06-18",
+          "youtube_id": "7Y1ZYVLxCXM",
+          "url": "https://www.youtube.com/watch?v=7Y1ZYVLxCXM",
+          "hosting": "EXTERNAL_PUBLISHER_EMBED_ONLY",
+          "verification_status": "OEMBED_VERIFIED_2026_11_14",
+          "note": "Official SABC News coverage of SANParks briefing on the independent forensic investigation."
+        }
+      ],
+      "rights_summary": {
+        "narration_type": "AI_GENERATED_NARRATION",
+        "broadcast_mirroring": "NONE \u2014 Official SABC/YouTube broadcasts embedded/linked externally without ripping files",
+        "image_license": "Wikimedia Commons CC BY-SA 4.0 (axxter99, Discott) & NASA GIBS Public Domain"
+      },
+      "chapters": [
+        {
+          "id": "ch1",
+          "title": "Chapter 1: Outbreak on Devil's Peak",
+          "narrator_tag": "Original Documentary Narration (en-ZA Natural Neural Voice, Scripted from Verified Sources)",
+          "text": "On Sunday morning, April 18, 2021, smoke began rising above Philip Kgosana Drive along the lower slopes of Devil's Peak in Cape Town. Temperatures climbing past thirty degrees Celsius, dry autumn berg conditions, and strong north-westerly winds drove spot fires downslope across dry vegetation toward the University of Cape Town and historic Rhodes Memorial.",
+          "audio_url": "assets/audio/FIRE-STORY-001_ch1.mp3",
+          "audio_type": "AI_GENERATED_NARRATION",
+          "duration_sec": 22.04
+        },
+        {
+          "id": "ch2",
+          "title": "Chapter 2: Heritage Lost in Hours",
+          "narrator_tag": "Original Documentary Narration (en-ZA Natural Neural Voice, Scripted from Verified Sources)",
+          "text": "Windborne embers vaulted highways and firebreaks. More than six hundred hectares burned across the national park boundary. Rhodes Memorial Tea Garden and Mostert's Mill, built in 1796, were gutted. On the UCT campus, four thousand students evacuated as flames engulfed the roof of the Jagger Library, damaging unique African Studies special collections before crews halted the advance.",
+          "audio_url": "assets/audio/FIRE-STORY-001_ch2.mp3",
+          "audio_type": "AI_GENERATED_NARRATION",
+          "duration_sec": 23.27
+        },
+        {
+          "id": "ch3",
+          "title": "Chapter 3: Initial Blame vs. SANParks Investigation Findings",
+          "narrator_tag": "Original Documentary Narration (en-ZA Natural Neural Voice, Scripted from Verified Sources)",
+          "text": "Early Sunday bulletins reported that police arrested a thirty-five-year-old unhoused man on suspicion of starting an unattended cooking fire. Two months later, SANParks announced findings from an independent investigation by Enviro Wildfire Services. The inquiry ruled out natural ignition as well as accidental or negligent causes, clearing the initially arrested suspect after CCTV showed a white vehicle stopping briefly near the origin before smoke emerged. SANParks reported compelling evidence suggesting a malicious act under ongoing investigation, while no specific perpetrator has been conclusively established.",
+          "audio_url": "assets/audio/FIRE-STORY-001_ch3.mp3",
+          "audio_type": "AI_GENERATED_NARRATION",
+          "duration_sec": 34.29
+        },
+        {
+          "id": "ch4",
+          "title": "Chapter 4: What Spaceborne Sensors Observed",
+          "narrator_tag": "Original Documentary Narration (en-ZA Natural Neural Voice, Scripted from Verified Sources)",
+          "text": "Timestamped satellite observation imagery from NASA Terra MODIS on April 18, 2021 captured the heavy coastal plume streaming southeast across False Bay. While orbital FIRMS detection coordinates map coarse thermal pixels (~375 meters to 1 kilometer) and downwind smoke transport, ground forensic evidence and historical memory remain essential to understanding how the fire began.",
+          "audio_url": "assets/audio/FIRE-STORY-001_ch4.mp3",
+          "audio_type": "AI_GENERATED_NARRATION",
+          "duration_sec": 22.04
+        }
+      ],
+      "sources": [
+        {
+          "id": "SRC-TM-01",
+          "title": "SABC News Broadcasts: Battle to contain Cape Town blaze & Authorities investigation briefing",
+          "publisher": "SABC News (Official YouTube Channel)",
+          "date": "2021-06-18",
+          "type": "Contemporaneous & Follow-Up News Broadcast (oEmbed Verified)",
+          "url": "https://www.youtube.com/watch?v=7Y1ZYVLxCXM",
+          "hosting": "EXTERNAL_PUBLISHER_LINK"
+        },
+        {
+          "id": "SRC-TM-02",
+          "title": "SANParks Statement on Table Mountain Independent Investigation (June 2021)",
+          "publisher": "South African National Parks (SANParks)",
+          "date": "2021-06-18",
+          "type": "Official Investigation Portal",
+          "url": "https://www.sanparks.org/",
+          "hosting": "EXTERNAL_PUBLISHER_LINK"
+        },
+        {
+          "id": "SRC-TM-03",
+          "title": "On-Location Table Mountain Fire Photographs (File:2021 Table Mountain fire 6.jpg & 3.jpg by axxter99)",
+          "publisher": "Wikimedia Commons",
+          "date": "2021-04-18",
+          "type": "Verified Incident Photograph (CC BY-SA 4.0)",
+          "url": "https://commons.wikimedia.org/wiki/File:2021_Table_Mountain_fire_6.jpg",
+          "hosting": "OPEN_LICENSE_LOCAL_COPY"
+        },
+        {
+          "id": "SRC-TM-04",
+          "title": "NASA GIBS / Worldview Terra MODIS True Color & SWIR 7-2-1 (2021-04-18, Cape Peninsula)",
+          "publisher": "NASA EOSDIS GIBS",
+          "date": "2021-04-18",
+          "type": "Timestamped Satellite Observation",
+          "url": "https://worldview.earthdata.nasa.gov/",
+          "hosting": "PUBLIC_DOMAIN_LOCAL_COPY"
+        }
+      ]
+    },
+    {
+      "story_id": "FIRE-STORY-002",
+      "title": "Knysna & Garden Route Disaster",
+      "subtitle": "CSIR Elandskraal Holdover Hypothesis, Separate Kruisfontein Fire, and Extreme Berg Winds (June 2017)",
+      "year": 2017,
+      "country": "South Africa",
+      "region": "Western Cape \u2014 Knysna (Elandskraal & Separately Kruisfontein / Plettenberg Bay)",
+      "lat": -34.0351,
+      "lon": 23.0465,
+      "start_date": "2017-06-06",
+      "end_date": "2017-06-10",
+      "ignition_time": "2017-03-22 lightning strike (CSIR probable Elandskraal holdover) -> 2017-06-07 gale flare-up",
+      "burned_area_ha": 15000,
+      "burned_area_note": "Approximately 15,000 hectares across indigenous forest, fynbos, pine plantations, and urban interface (CSIR report estimate).",
+      "cause_status": "PROBABLE_CAUSE",
+      "cause_label": "Probable Positive-Lightning Holdover (22 March 2017, Elandskraal) \u2014 Cannot Be Established with Certainty (CSIR)",
+      "voice_id": "en-ZA-LukeNeural",
+      "early_reporting": "During the chaos of June 7\u20139, 2017, widespread social and early broadcast rumors claimed arsonists coordinated simultaneous fires along the Garden Route.",
+      "official_conclusion": "The CSIR technical investigation (Forsyth, Le Maitre & van den Dool) reconstructed a probable holdover fire near Elandskraal associated with a positive lightning strike on 22 March 2017, flaring up on 7 June under strong Berg winds and very dry vegetation. Crucially, the CSIR report explicitly states that the lightning explanation cannot be established with certainty, and clearly distinguishes the Elandskraal outbreak from the separate Kruisfontein fire near Plettenberg Bay.",
+      "what_remains_unknown": "CSIR investigators explicitly note that the 22 March lightning holdover hypothesis cannot be proven with forensic certainty, and the separate Kruisfontein ignition plus long-range ember spotting cannot be reduced to one unified cause.",
+      "human_impact": "Seven people lost their lives, over 10,000 residents were evacuated, and roughly 1,000 homes and structures were destroyed across Knysna, Brenton-on-Sea, and Plettenberg Bay.",
+      "satellite_linkage": {
+        "match_status": "VERIFIED_EVENT_MATCH",
+        "constellation": "Terra MODIS & Suomi NPP VIIRS + NASA GIBS True Color",
+        "observation_date": "2017-06-07",
+        "note": "NASA GIBS Terra MODIS timestamped observation on 2017-06-07 documents multi-kilometre smoke plumes pouring offshore from Knysna and Plettenberg Bay."
+      },
+      "images": {
+        "ground": "assets/incidents/knysna_2017_ground.jpg",
+        "ground_alt": "assets/incidents/knysna_2017_sat.jpg",
+        "satellite": "assets/incidents/knysna_2017_sat.jpg",
+        "swir": "assets/incidents/knysna_2017_swir.jpg"
+      },
+      "photo_provenance": {
+        "primary": {
+          "file": "assets/incidents/knysna_2017_ground.jpg",
+          "commons_title": "File:Knysna after the fires of 2017.jpg",
+          "creator": "Gbawden",
+          "capture_date": "2017-07-31 12:02:09",
+          "license": "CC BY-SA 4.0",
+          "provenance_class": "VERIFIED_INCIDENT_PHOTO",
+          "note": "Verified post-fire landscape photograph of scorched Knysna ridge and lagoon captured seven weeks after the June 2017 disaster."
+        }
+      },
+      "satellite_provenance": {
+        "true_color": {
+          "file": "assets/incidents/knysna_2017_sat.jpg",
+          "product_type": "INCIDENT_DATE_TRUE_COLOR",
+          "sensor": "NASA EOSDIS GIBS Terra MODIS CorrectedReflectance TrueColor",
+          "acquisition_date": "2017-06-07",
+          "note": "Timestamped satellite observation on June 7 showing dense offshore Berg-wind smoke plumes along the Garden Route."
+        },
+        "swir": {
+          "file": "assets/incidents/knysna_2017_swir.jpg",
+          "product_type": "SWIR_721_FALSE_COLOR_COMPOSITE",
+          "sensor": "NASA EOSDIS GIBS Terra MODIS Bands 7-2-1",
+          "acquisition_date": "2017-06-07",
+          "note": "Shortwave-infrared false-color composite isolating active thermal fronts beneath dense smoke."
+        }
+      },
+      "news_broadcasts": [
+        {
+          "broadcaster": "eNCA (via Gift of the Givers archive)",
+          "oembed_channel": "Gift of the Givers Foundation",
+          "title": "Knysna Fire eNCA 08/06/2017",
+          "date": "2017-06-08",
+          "youtube_id": "v96wjmiO4kU",
+          "url": "https://www.youtube.com/watch?v=v96wjmiO4kU",
+          "hosting": "EXTERNAL_PUBLISHER_EMBED_ONLY",
+          "verification_status": "OEMBED_VERIFIED_2026_11_14",
+          "note": "June 8, 2017 eNCA broadcast coverage hosted on YouTube via Gift of the Givers Foundation."
+        },
+        {
+          "broadcaster": "SABC News",
+          "oembed_channel": "SABC News",
+          "title": "Knysna fires leave four dead",
+          "date": "2017-06-08",
+          "youtube_id": "AHCUJBCEOcM",
+          "url": "https://www.youtube.com/watch?v=AHCUJBCEOcM",
+          "hosting": "EXTERNAL_PUBLISHER_EMBED_ONLY",
+          "verification_status": "OEMBED_VERIFIED_2026_11_14",
+          "note": "Original SABC News broadcast on June 2017 Knysna casualties and emergency response."
+        }
+      ],
+      "rights_summary": {
+        "narration_type": "AI_GENERATED_NARRATION",
+        "broadcast_mirroring": "NONE \u2014 Official SABC / archived eNCA broadcasts embedded/linked externally without ripping files",
+        "image_license": "Wikimedia Commons CC BY-SA 4.0 (Gbawden) & NASA GIBS Public Domain"
+      },
+      "chapters": [
+        {
+          "id": "ch1",
+          "title": "Chapter 1: Drought Before the Storm",
+          "narrator_tag": "Original Documentary Narration (en-ZA Natural Neural Voice, Scripted from Verified Sources)",
+          "text": "By June 2017, South Africa's Southern Cape was locked in its worst recorded multi-year drought. Dense stands of invasive alien pine and eucalyptus framed neighborhoods from Sedgefield through Knysna to Plettenberg Bay. When an offshore winter storm triggered fierce katabatic berg winds on June 7, hot dry gusts funnelled down the Outeniqua slopes directly toward coastal estates.",
+          "audio_url": "assets/audio/FIRE-STORY-002_ch1.mp3",
+          "audio_type": "AI_GENERATED_NARRATION",
+          "duration_sec": 23.27
+        },
+        {
+          "id": "ch2",
+          "title": "Chapter 2: Evacuation Under Embers",
+          "narrator_tag": "Original Documentary Narration (en-ZA Natural Neural Voice, Scripted from Verified Sources)",
+          "text": "Across Knysna Heights, Belvidere, and Brenton-on-Sea, emergency sirens sounded as burning embers vaulted kilometers ahead of the flame front. Over ten thousand residents evacuated toward coastal beaches and stadiums. Seven lives were lost and nearly one thousand structures burned across fifteen thousand hectares of landscape.",
+          "audio_url": "assets/audio/FIRE-STORY-002_ch2.mp3",
+          "audio_type": "AI_GENERATED_NARRATION",
+          "duration_sec": 18.37
+        },
+        {
+          "id": "ch3",
+          "title": "Chapter 3: Elandskraal Holdover Hypothesis & CSIR Caveats",
+          "narrator_tag": "Original Documentary Narration (en-ZA Natural Neural Voice, Scripted from Verified Sources)",
+          "text": "While early news rumors blamed organized arsonists, researchers at South Africa's Council for Scientific and Industrial Research\u2014Greg Forsyth, David Le Maitre, and Riaan van den Dool\u2014conducted a rigorous reconstruction, carefully distinguishing the Elandskraal outbreak near Knysna from the separate Kruisfontein fire further east. Their evidence reconstructed a probable holdover fire associated with a positive lightning strike on March 22, 2017, smouldering deep in dry organic duff until intense June 7 berg winds forced it into a flare-up. Crucially, the CSIR team stated that the lightning explanation cannot be established with certainty.",
+          "audio_url": "assets/audio/FIRE-STORY-002_ch3.mp3",
+          "audio_type": "AI_GENERATED_NARRATION",
+          "duration_sec": 37.14
+        },
+        {
+          "id": "ch4",
+          "title": "Chapter 4: Lessons for the Southern Cape",
+          "narrator_tag": "Original Documentary Narration (en-ZA Natural Neural Voice, Scripted from Verified Sources)",
+          "text": "June 7 timestamped satellite observation imagery from NASA Terra MODIS recorded smoke blankets stretching far across the Indian Ocean. The Knysna disaster showed how rare weather extremes acting on dry vegetation can turn possible holdover ignitions into urban-interface catastrophe\u2014and why orbital thermal detection coordinates must always be interpreted alongside honest forensic uncertainty.",
+          "audio_url": "assets/audio/FIRE-STORY-002_ch4.mp3",
+          "audio_type": "AI_GENERATED_NARRATION",
+          "duration_sec": 21.22
+        }
+      ],
+      "sources": [
+        {
+          "id": "SRC-KN-01",
+          "title": "eNCA (08/06/2017) & SABC News Broadcasts: Knysna Fire Coverage",
+          "publisher": "SABC News / Gift of the Givers YouTube Archives",
+          "date": "2017-06-08",
+          "type": "Contemporaneous Television News Broadcast (oEmbed Verified)",
+          "url": "https://www.youtube.com/watch?v=AHCUJBCEOcM",
+          "hosting": "EXTERNAL_PUBLISHER_LINK"
+        },
+        {
+          "id": "SRC-KN-02",
+          "title": "CSIR Technical Report: The Elandskraal Fire, Knysna (Distinguished from Separate Kruisfontein Fire)",
+          "publisher": "Council for Scientific and Industrial Research (CSIR)",
+          "date": "2018-06-01",
+          "type": "Official Scientific Investigation",
+          "url": "https://researchspace.csir.co.za/",
+          "hosting": "EXTERNAL_PUBLISHER_LINK"
+        },
+        {
+          "id": "SRC-KN-03",
+          "title": "Post-Fire Knysna Photograph (Gbawden, CC BY-SA 4.0) & NASA GIBS Terra MODIS (2017-06-07)",
+          "publisher": "Wikimedia Commons & NASA EOSDIS GIBS",
+          "date": "2017-06-07",
+          "type": "Verified Post-Event Photograph & Timestamped Satellite Observation",
+          "url": "https://commons.wikimedia.org/wiki/File:Knysna_after_the_fires_of_2017.jpg",
+          "hosting": "OPEN_LICENSE_LOCAL_COPY"
+        }
+      ]
+    },
+    {
+      "story_id": "FIRE-STORY-003",
+      "title": "Lahaina Wildfire Tragedy",
+      "subtitle": "Single Fire with Two Phases Near Utility Pole 25 \u2014 Confirmed ATF/MFD Findings (August 2023)",
+      "year": 2023,
+      "country": "United States",
+      "region": "Maui, Hawai'i \u2014 Historic Lahaina Town",
+      "lat": 20.8783,
+      "lon": -156.6825,
+      "start_date": "2023-08-08",
+      "end_date": "2023-08-09",
+      "ignition_time": "2023-08-08T06:34-10:00 (Initial phase) -> ~14:52-10:00 (Same-fire rekindle)",
+      "burned_area_ha": 878,
+      "burned_area_note": "2,170 acres (~878 hectares), destroying more than 2,200 structures in historic Lahaina.",
+      "cause_status": "CONFIRMED_CAUSE",
+      "cause_label": "Confirmed Accidental Electrical Ignition \u2014 One Fire with Two Phases (Maui Fire Department / ATF Oct 2024)",
+      "voice_id": "en-US-GuyNeural",
+      "early_reporting": "Early broadcasts on August 8\u20139, 2023 struggled with downed telecommunications and power, sometimes treating the afternoon town inferno as an unrelated second fire after morning grass flames appeared contained.",
+      "official_conclusion": "The joint October 2024 Origin & Cause Report by the Maui Fire Department (MFD) and U.S. ATF formally determined this was one continuous fire with two phases: Phase 1 began at 6:34 AM near utility pole 25 off Lahainaluna Road when re-energized broken electrical lines ignited adjacent vegetation; hidden embers from that morning ignition subsequently rekindled at approximately 2:52 PM under destructive downslope winds\u2014never an unrelated second ignition.",
+      "what_remains_unknown": "Civil litigation and utility/emergency-management policy reforms remain documented separately from the physical MFD/ATF origin-and-cause determination.",
+      "human_impact": "102 confirmed fatalities\u2014the deadliest U.S. wildfire in over a century\u2014with thousands displaced and historic Front Street destroyed.",
+      "satellite_linkage": {
+        "match_status": "VERIFIED_EVENT_MATCH",
+        "constellation": "Suomi NPP / NOAA-20 VIIRS & Terra MODIS + NASA GIBS",
+        "observation_date": "2023-08-09",
+        "note": "NASA Worldview timestamped observation on 2023-08-09 reveals post-storm smoke and thermal scar over West Maui coast; 2022/2026 statistical CSV benchmark does not load 2023."
+      },
+      "images": {
+        "ground": "assets/incidents/lahaina_2023_ground.jpg",
+        "ground_alt": "assets/incidents/lahaina_2023_aftermath.jpg",
+        "satellite": "assets/incidents/lahaina_2023_sat.jpg",
+        "swir": "assets/incidents/lahaina_2023_swir.jpg"
+      },
+      "photo_provenance": {
+        "primary": {
+          "file": "assets/incidents/lahaina_2023_ground.jpg",
+          "commons_title": "File:2023 Maui fires - Lahaina damage via Coast Guard.jpg",
+          "creator": "U.S. Coast Guard Hawai'i Pacific District 14",
+          "capture_date": "2023-08-08",
+          "license": "Public domain",
+          "provenance_class": "VERIFIED_INCIDENT_PHOTO",
+          "note": "Verified August 8, 2023 night photograph showing active shoreline & harbor fires burning directly inside Lahaina."
+        },
+        "secondary": {
+          "file": "assets/incidents/lahaina_2023_aftermath.jpg",
+          "commons_title": "File:Os-lahaina-town-fire.jpg",
+          "creator": "U.S. Civil Air Patrol",
+          "capture_date": "2023-08-09",
+          "license": "Public domain",
+          "provenance_class": "VERIFIED_INCIDENT_PHOTO",
+          "note": "Verified U.S. Civil Air Patrol aerial documentation of Lahaina destruction captured August 9, 2023."
+        }
+      },
+      "satellite_provenance": {
+        "true_color": {
+          "file": "assets/incidents/lahaina_2023_sat.jpg",
+          "product_type": "INCIDENT_DATE_TRUE_COLOR",
+          "sensor": "NASA EOSDIS GIBS Terra/Aqua MODIS CorrectedReflectance TrueColor",
+          "acquisition_date": "2023-08-09",
+          "note": "Timestamped morning-after satellite observation showing West Maui burn footprint and coastal haze."
+        },
+        "swir": {
+          "file": "assets/incidents/lahaina_2023_swir.jpg",
+          "product_type": "SWIR_721_FALSE_COLOR_COMPOSITE",
+          "sensor": "NASA EOSDIS GIBS Terra MODIS Bands 7-2-1",
+          "acquisition_date": "2023-08-09",
+          "note": "Shortwave-infrared false-color observation highlighting the burned Lahaina coastal urban scar."
+        }
+      },
+      "news_broadcasts": [
+        {
+          "broadcaster": "FRONTLINE PBS | Official",
+          "oembed_channel": "FRONTLINE PBS | Official",
+          "title": "Lahaina Residents Recount Desperate Escape from 'Maui's Deadly Firestorm' | FRONTLINE",
+          "date": "2023-11-01",
+          "youtube_id": "DS9hb094m08",
+          "url": "https://www.youtube.com/watch?v=DS9hb094m08",
+          "hosting": "EXTERNAL_PUBLISHER_EMBED_ONLY",
+          "verification_status": "OEMBED_VERIFIED_2026_11_14",
+          "note": "Official FRONTLINE PBS investigative documentary feature on YouTube."
+        },
+        {
+          "broadcaster": "PBS NewsHour",
+          "oembed_channel": "PBS NewsHour",
+          "title": "What fueled the Hawaiian wildfires that killed dozens and leveled historic Lahaina town",
+          "date": "2024-10-02",
+          "youtube_id": "6wwG3NgFPPk",
+          "url": "https://www.youtube.com/watch?v=6wwG3NgFPPk",
+          "hosting": "EXTERNAL_PUBLISHER_EMBED_ONLY",
+          "verification_status": "OEMBED_VERIFIED_2026_11_14",
+          "note": "Official PBS NewsHour broadcast analyzing conditions and investigation findings."
+        }
+      ],
+      "rights_summary": {
+        "narration_type": "AI_GENERATED_NARRATION",
+        "broadcast_mirroring": "NONE \u2014 Official PBS FRONTLINE / NewsHour broadcasts embedded externally",
+        "image_license": "CC BY-SA 2.0 (Kahunapule Michael Johnson) & Public Domain (US CAP / NASA)"
+      },
+      "chapters": [
+        {
+          "id": "ch1",
+          "title": "Chapter 1: Phase One \u2014 6:34 AM Spark at Pole 25",
+          "narrator_tag": "Original Documentary Narration (en-US Natural Neural Voice, Scripted from Verified Sources)",
+          "text": "At 6:34 AM on August 8, 2023, fierce trade winds strengthened by Hurricane Dora passing far to the south tore across the slopes above Lahaina, Hawaii. Broken electrical lines near utility pole twenty-five off Lahainaluna Road re-energized and ignited dry, unmaintained grasses. Fire crews knocked down visible morning flames before nine o'clock, leaving hidden embers smouldering inside adjacent gully vegetation.",
+          "audio_url": "assets/audio/FIRE-STORY-003_ch1.mp3",
+          "audio_type": "AI_GENERATED_NARRATION",
+          "duration_sec": 24.49
+        },
+        {
+          "id": "ch2",
+          "title": "Chapter 2: Phase Two \u2014 The 2:52 PM Rekindle of the Same Fire",
+          "narrator_tag": "Original Documentary Narration (en-US Natural Neural Voice, Scripted from Verified Sources)",
+          "text": "This afternoon devastation was not an unrelated second ignition. Around 2:52 PM, violent downslope gusts fanned surviving morning embers inside the gully back into active flame. With cellular towers failing and escape roads choked, black smoke and wall-of-flame embers swept through historic Front Street toward the Pacific harbor.",
+          "audio_url": "assets/audio/FIRE-STORY-003_ch2.mp3",
+          "audio_type": "AI_GENERATED_NARRATION",
+          "duration_sec": 19.59
+        },
+        {
+          "id": "ch3",
+          "title": "Chapter 3: ATF and Maui Fire Department Findings",
+          "narrator_tag": "Original Documentary Narration (en-US Natural Neural Voice, Scripted from Verified Sources)",
+          "text": "Published in October 2024, the joint origin and cause report by the Maui Fire Department and the U.S. Bureau of Alcohol, Tobacco, Firearms and Explosives confirmed conclusively that Lahaina suffered one fire with two phases\u2014an initial ignition from re-energized broken conductors at 6:34 AM, followed by its ember-driven rekindle around 2:52 PM.",
+          "audio_url": "assets/audio/FIRE-STORY-003_ch3.mp3",
+          "audio_type": "AI_GENERATED_NARRATION",
+          "duration_sec": 21.22
+        },
+        {
+          "id": "ch4",
+          "title": "Chapter 4: Satellite Witness and Resilience",
+          "narrator_tag": "Original Documentary Narration (en-US Natural Neural Voice, Scripted from Verified Sources)",
+          "text": "As clouds parted the morning of August 9, timestamped satellite observation imagery from NASA orbital sensors documented the dark charcoal scar along West Maui's shoreline. One hundred and two lives were lost\u2014an enduring warning that fast wind-driven rekindles can outpace both ground suppression and satellite revisit intervals.",
+          "audio_url": "assets/audio/FIRE-STORY-003_ch4.mp3",
+          "audio_type": "AI_GENERATED_NARRATION",
+          "duration_sec": 19.18
+        }
+      ],
+      "sources": [
+        {
+          "id": "SRC-LH-01",
+          "title": "Maui Fire Department & U.S. ATF Lahaina Origin and Cause Report (October 2024)",
+          "publisher": "County of Maui / U.S. ATF",
+          "date": "2024-10-02",
+          "type": "Official Forensic Investigation",
+          "url": "https://www.mauicounty.gov/",
+          "hosting": "EXTERNAL_PUBLISHER_LINK"
+        },
+        {
+          "id": "SRC-LH-02",
+          "title": "PBS FRONTLINE & NewsHour Broadcasts: Maui Wildfire Documentary Coverage",
+          "publisher": "PBS Official YouTube Channels",
+          "date": "2024-10-02",
+          "type": "Investigative Broadcast Documentary (oEmbed Verified)",
+          "url": "https://www.youtube.com/watch?v=DS9hb094m08",
+          "hosting": "EXTERNAL_PUBLISHER_LINK"
+        },
+        {
+          "id": "SRC-LH-03",
+          "title": "Lahaina Harbor Fire Photograph (U.S. Coast Guard District 14) & Civil Air Patrol Aerial",
+          "publisher": "Wikimedia Commons",
+          "date": "2023-08-08",
+          "type": "Verified Incident Photograph (Public Domain)",
+          "url": "https://commons.wikimedia.org/wiki/File:2023_Maui_fires_-_Lahaina_damage_via_Coast_Guard.jpg",
+          "hosting": "PUBLIC_DOMAIN_LOCAL_COPY"
+        }
+      ]
+    },
+    {
+      "story_id": "FIRE-STORY-004",
+      "title": "Muizenberg & Tokai Peninsula Wildfire",
+      "subtitle": "2:00 AM Boyes Drive Outbreak, Five-Day Mountain Siege, and Peninsula Recovery (March 2015)",
+      "year": 2015,
+      "country": "South Africa",
+      "region": "Western Cape \u2014 Muizenberg (Boyes Drive / Pecks Valley), Silvermine & Tokai",
+      "lat": -34.095,
+      "lon": 18.458,
+      "start_date": "2015-03-01",
+      "end_date": "2015-03-05",
+      "ignition_time": "2015-03-01T02:00+02:00 (City of Cape Town timeline: ~2:00 AM above Boyes Drive / Pecks Valley)",
+      "burned_area_ha": 5500,
+      "burned_area_note": "Estimates ranged from 3,000 to over 6,000 hectares across Boyes Drive / Pecks Valley, Silvermine Nature Reserve, Tokai Forest, Noordhoek, and Chapman's Peak.",
+      "cause_status": "PROBABLE_CAUSE",
+      "cause_label": "Accidental Human-Related Cause \u2014 Probable Campfire Reconstruction (No Conclusive Individual Attribution)",
+      "voice_id": "en-ZA-LukeNeural",
+      "early_reporting": "Live Cape Town radio and news helicopters broadcast dramatic scenes from 1\u20133 March as strong winds drove flame fronts from above Muizenberg across Ou Kaapse Weg, Tokai, and Chapman's Peak Drive.",
+      "official_conclusion": "The City of Cape Town operational timeline confirms the fire started above Boyes Drive / Farmer Peck's Valley around 2:00 AM on 1 March 2015 and subsequently spread across Silvermine toward Tokai. Post-event investigation attributed the main fire to an accidental human-related cause; the open campfire explanation is the investigator's probable reconstruction of how it began, rather than a conclusively identified individual or proven act.",
+      "what_remains_unknown": "No named individual was conclusively identified or prosecuted in public records, leaving the campfire explanation explicitly at the level of probable investigation reconstruction.",
+      "human_impact": "Hundreds evacuated; homes and structures including historic Tokai estate buildings and Tintswalo Atlantic damaged or destroyed; firefighters injured by smoke inhalation; accelerated transition from commercial pine plantations back to indigenous fynbos.",
+      "satellite_linkage": {
+        "match_status": "VERIFIED_EVENT_MATCH",
+        "constellation": "Terra / Aqua MODIS + NASA GIBS True Color",
+        "observation_date": "2015-03-02",
+        "note": "NASA GIBS Terra MODIS timestamped observation on 2015-03-02 clearly captures the Peninsula wildfire smoke streaming northwest out into the Atlantic Ocean."
+      },
+      "images": {
+        "ground": "assets/incidents/muizenberg_2015_night_ground.jpg",
+        "ground_alt": "assets/incidents/muizenberg_2015_ground.jpg",
+        "satellite": "assets/incidents/muizenberg_2015_sat.jpg",
+        "swir": "assets/incidents/muizenberg_2015_swir.jpg"
+      },
+      "photo_provenance": {
+        "primary": {
+          "file": "assets/incidents/muizenberg_2015_night_ground.jpg",
+          "commons_title": "File:Muizenburg Fires of 2015, Into the darkness.jpg",
+          "creator": "SkyPixels",
+          "capture_date": "2015-03-03 14:10",
+          "license": "CC BY-SA 4.0",
+          "provenance_class": "VERIFIED_INCIDENT_PHOTO",
+          "note": "Verified on-location aerial water-drop photograph captured during the March 2015 South Peninsula fire."
+        },
+        "secondary": {
+          "file": "assets/incidents/muizenberg_2015_ground.jpg",
+          "commons_title": "File:Muizenberg Mountian Fires in Cape Town of 2015.jpg",
+          "creator": "SkyPixels",
+          "capture_date": "2015-03-04 13:35:31",
+          "license": "CC BY-SA 4.0",
+          "provenance_class": "VERIFIED_INCIDENT_PHOTO",
+          "note": "Verified on-location helicopter containment photograph taken on March 4, 2015 over Muizenberg."
+        }
+      },
+      "satellite_provenance": {
+        "true_color": {
+          "file": "assets/incidents/muizenberg_2015_sat.jpg",
+          "product_type": "INCIDENT_DATE_TRUE_COLOR",
+          "sensor": "NASA EOSDIS GIBS Terra MODIS CorrectedReflectance TrueColor",
+          "acquisition_date": "2015-03-02",
+          "note": "Timestamped satellite observation showing dense Peninsula wildfire smoke plume extending northwest into the Atlantic."
+        },
+        "swir": {
+          "file": "assets/incidents/muizenberg_2015_swir.jpg",
+          "product_type": "SWIR_721_FALSE_COLOR_COMPOSITE",
+          "sensor": "NASA EOSDIS GIBS Terra MODIS Bands 7-2-1",
+          "acquisition_date": "2015-03-02",
+          "note": "Shortwave-infrared composite separating active South Peninsula burn scars from marine stratus clouds."
+        }
+      },
+      "news_broadcasts": [
+        {
+          "broadcaster": "eNCA",
+          "oembed_channel": "eNCA",
+          "title": "Muizenberg fire: updates from the air",
+          "date": "2015-03-02",
+          "youtube_id": "ig18wVQey_4",
+          "url": "https://www.youtube.com/watch?v=ig18wVQey_4",
+          "hosting": "EXTERNAL_PUBLISHER_EMBED_ONLY",
+          "verification_status": "OEMBED_VERIFIED_2026_11_14",
+          "note": "Original eNCA aerial news broadcast streamed directly from eNCA official YouTube channel."
+        },
+        {
+          "broadcaster": "SABC News",
+          "oembed_channel": "SABC News",
+          "title": "The fire in the South Peninsula has spread to other areas: Working On Fire",
+          "date": "2015-03-03",
+          "youtube_id": "nhCtgNRS1Vs",
+          "url": "https://www.youtube.com/watch?v=nhCtgNRS1Vs",
+          "hosting": "EXTERNAL_PUBLISHER_EMBED_ONLY",
+          "verification_status": "OEMBED_VERIFIED_2026_11_14",
+          "note": "Original SABC News broadcast from Constantiaberg / Tokai fireline."
+        }
+      ],
+      "rights_summary": {
+        "narration_type": "AI_GENERATED_NARRATION",
+        "broadcast_mirroring": "NONE \u2014 Official eNCA/SABC broadcasts embedded externally without ripping files",
+        "image_license": "Wikimedia Commons CC BY-SA 4.0 (SkyPixels) & NASA GIBS Public Domain"
+      },
+      "chapters": [
+        {
+          "id": "ch1",
+          "title": "Chapter 1: 2:00 AM Outbreak Above Boyes Drive",
+          "narrator_tag": "Original Documentary Narration (en-ZA Natural Neural Voice, Scripted from Verified Sources)",
+          "text": "According to the City of Cape Town operational timeline, the fire began around two o'clock in the morning on Sunday, March 1, 2015, high above Boyes Drive and Pecks Valley overlooking Muizenberg. Caught by extreme late-summer heat and seventy-to-one-hundred-kilometer-per-hour south-easterly gusts, the blaze vaulted Silvermine mountain ridges and spread toward Tokai, Noordhoek, and Chapman's Peak.",
+          "audio_url": "assets/audio/FIRE-STORY-004_ch1.mp3",
+          "audio_type": "AI_GENERATED_NARRATION",
+          "duration_sec": 22.45
+        },
+        {
+          "id": "ch2",
+          "title": "Chapter 2: Five Days Across the Peninsula",
+          "narrator_tag": "Original Documentary Narration (en-ZA Natural Neural Voice, Scripted from Verified Sources)",
+          "text": "For five exhausting days, City of Cape Town Fire and Rescue crews, Working on Fire teams, SANParks rangers, and Volunteer Wildfire Services battled ridge lines and residential perimeters alongside helicopter water bombers. More than five thousand hectares burned across commercial pine stands and mountain fynbos before containment held.",
+          "audio_url": "assets/audio/FIRE-STORY-004_ch2.mp3",
+          "audio_type": "AI_GENERATED_NARRATION",
+          "duration_sec": 19.59
+        },
+        {
+          "id": "ch3",
+          "title": "Chapter 3: Accidental Cause \u2014 Probable Reconstruction vs. Proof",
+          "narrator_tag": "Original Documentary Narration (en-ZA Natural Neural Voice, Scripted from Verified Sources)",
+          "text": "Post-fire investigation attributed the main South Peninsula blaze to an accidental human-related cause originating near Boyes Drive and Pecks Valley. Investigators advanced an unattended campfire explanation as their probable reconstruction of the ignition mechanism, rather than a conclusively identified individual or proven criminal act.",
+          "audio_url": "assets/audio/FIRE-STORY-004_ch3.mp3",
+          "audio_type": "AI_GENERATED_NARRATION",
+          "duration_sec": 17.96
+        },
+        {
+          "id": "ch4",
+          "title": "Chapter 4: Atlantic Plume from Orbit",
+          "narrator_tag": "Original Documentary Narration (en-ZA Natural Neural Voice, Scripted from Verified Sources)",
+          "text": "From orbit on March 2, 2015, timestamped satellite observation imagery from NASA Terra MODIS recorded a bright, narrow plume venting west off the Cape Peninsula over the Atlantic Ocean. In the years afterward, ecological management accelerated the shift across parts of Tokai from dense commercial pine plantations back toward fire-adapted indigenous sand plain fynbos.",
+          "audio_url": "assets/audio/FIRE-STORY-004_ch4.mp3",
+          "audio_type": "AI_GENERATED_NARRATION",
+          "duration_sec": 22.04
+        }
+      ],
+      "sources": [
+        {
+          "id": "SRC-MZ-01",
+          "title": "eNCA & SABC News Broadcasts: March 2015 Cape Peninsula & Muizenberg Fires",
+          "publisher": "eNCA & SABC News (Official YouTube Channels)",
+          "date": "2015-03-03",
+          "type": "Contemporaneous Television News Broadcast (oEmbed Verified)",
+          "url": "https://www.youtube.com/watch?v=ig18wVQey_4",
+          "hosting": "EXTERNAL_PUBLISHER_LINK"
+        },
+        {
+          "id": "SRC-MZ-02",
+          "title": "City of Cape Town Fire & Rescue Timeline & SANParks Tokai Ecological Review",
+          "publisher": "City of Cape Town & South African National Parks (SANParks)",
+          "date": "2015-03-10",
+          "type": "Official Operational & Agency Archive",
+          "url": "https://www.sanparks.org/",
+          "hosting": "EXTERNAL_PUBLISHER_LINK"
+        },
+        {
+          "id": "SRC-MZ-03",
+          "title": "SkyPixels On-Location Aerial Photos & NASA GIBS Terra MODIS (2015-03-02)",
+          "publisher": "Wikimedia Commons (SkyPixels, CC BY-SA 4.0) & NASA EOSDIS GIBS",
+          "date": "2015-03-03",
+          "type": "Verified Incident Photograph & Timestamped Satellite Observation",
+          "url": "https://commons.wikimedia.org/wiki/File:Muizenburg_Fires_of_2015,_Into_the_darkness.jpg",
+          "hosting": "PUBLIC_DOMAIN_LOCAL_COPY"
+        }
+      ]
+    }
+  ]
+}

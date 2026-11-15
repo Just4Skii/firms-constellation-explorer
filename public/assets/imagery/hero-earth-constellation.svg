@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 260" width="100%" height="260" fill="none">
+  <defs>
+    <radialGradient id="atmo" cx="50%" cy="62%" r="55%">
+      <stop offset="0%" stop-color="#1E3A8A" stop-opacity="0.9"/>
+      <stop offset="65%" stop-color="#0B1322" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#060B14" stop-opacity="1"/>
+    </radialGradient>
+  </defs>
+  <rect width="520" height="260" rx="12" fill="url(#atmo)" stroke="#1E293B"/>
+  <!-- Earth Horizon Curve -->
+  <path d="M -40 260 Q 260 120 560 260 Z" fill="#0F172A" stroke="#38BDF8" stroke-width="1.5"/>
+  <!-- Orbital Arcs -->
+  <path d="M 30 230 Q 190 35 470 190" stroke="#14B8A6" stroke-width="1.6" stroke-dasharray="5 3"/>
+  <path d="M 55 245 Q 250 15 495 215" stroke="#F97316" stroke-width="2"/>
+  <path d="M 85 250 Q 290 45 480 240" stroke="#A855F7" stroke-width="1.8" stroke-dasharray="3 2"/>
+  <path d="M 15 210 Q 240 85 505 165" stroke="#3B82F6" stroke-width="1.6"/>
+  <!-- Active Fire Thermal Plumes on Surface -->
+  <circle cx="220" cy="208" r="5" fill="#F97316"/><circle cx="220" cy="208" r="12" fill="#F97316" fill-opacity="0.25"/>
+  <circle cx="255" cy="202" r="6.5" fill="#FACC15"/><circle cx="255" cy="202" r="15" fill="#FACC15" fill-opacity="0.25"/>
+  <circle cx="292" cy="212" r="4.5" fill="#FB923C"/><circle cx="292" cy="212" r="10" fill="#FB923C" fill-opacity="0.25"/>
+  <circle cx="178" cy="220" r="4" fill="#38BDF8"/>
+  <!-- Satellite Labels -->
+  <g font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="700">
+    <circle cx="155" cy="128" r="4.5" fill="#14B8A6"/><text x="82" y="122" fill="#2DD4BF">TERRA (08:29 LST)</text>
+    <circle cx="255" cy="112" r="5" fill="#F97316"/><text x="200" y="96" fill="#FB923C">NOAA-20 J1 (13:46 LST)</text>
+    <circle cx="318" cy="134" r="4.5" fill="#A855F7"/><text x="330" y="132" fill="#C084FC">NOAA-21 J2 (13:31 LST)</text>
+    <circle cx="385" cy="155" r="4.5" fill="#3B82F6"/><text x="360" y="176" fill="#60A5FA">AQUA (15:59 LST)</text>
+  </g>
+</svg>

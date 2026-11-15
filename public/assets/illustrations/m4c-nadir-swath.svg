@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 220" width="100%" height="220" fill="none">
+  <rect width="760" height="220" rx="10" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <!-- Left: Falsified M4 -->
+  <rect x="18" y="18" width="350" height="184" rx="8" fill="#FFF1F2" stroke="#FECDD3"/>
+  <text x="32" y="42" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#BE123C">CORR-01: WHY ORIGINAL M4 WAS FALSIFIED (DO NOT CLAIM)</text>
+  <text x="32" y="62" font-family="JetBrains Mono, monospace" font-size="11" fill="#881337">Original M4 = Σ [ FRP_i / (scan_i × track_i) ]</text>
+  <text x="32" y="84" font-family="Inter, sans-serif" font-size="11" fill="#9F1239">• Per-pixel FRP (MW) is already an extensive power quantity.</text>
+  <text x="32" y="102" font-family="Inter, sans-serif" font-size="11" fill="#9F1239">• Dividing by pixel area multiplies VIIRS (0.196 km²) by 6.629×</text>
+  <text x="32" y="118" font-family="Inter, sans-serif" font-size="11" fill="#9F1239">  relative to MODIS (1.198 km²).</text>
+  <rect x="32" y="134" width="320" height="52" rx="6" fill="#FFE4E6" stroke="#FDA4AF"/>
+  <text x="44" y="155" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#9F1239">Resulting Distortion: J1/MODIS = 17.008× (vs 2.018× M3)</text>
+  <text x="44" y="173" font-family="JetBrains Mono, monospace" font-size="11" fill="#BE123C">J1–J2 Daily Spearman ρ collapsed: 0.8929 → 0.4643</text>
+
+  <!-- Right: Validated M4c -->
+  <rect x="392" y="18" width="350" height="184" rx="8" fill="#EFF6FF" stroke="#BFDBFE"/>
+  <text x="406" y="42" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#1D4ED8">VALIDATED M4c: NADIR_FILTERED_TOTAL_FRP (MW)</text>
+  <text x="406" y="62" font-family="JetBrains Mono, monospace" font-size="11" fill="#1E3A8A">M4c = Σ FRP_i  where  scan_i ≤ 1.3 × scan_nadir</text>
+  <text x="406" y="84" font-family="Inter, sans-serif" font-size="11" fill="#1E40AF">• Rejects bow-tie scan-edge pixels (MODIS ≤1.30km, VIIRS ≤0.49km).</text>
+  <text x="406" y="102" font-family="Inter, sans-serif" font-size="11" fill="#1E40AF">• Preserves extensive radiative power units (MW).</text>
+  <text x="406" y="118" font-family="Inter, sans-serif" font-size="11" fill="#1E40AF">• Eliminates MODIS off-nadir threshold &amp; footprint inflation.</text>
+  <rect x="406" y="134" width="320" height="52" rx="6" fill="#DBEAFE" stroke="#93C5FD"/>
+  <text x="418" y="155" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#1E3A8A">Validated Output: J1/MODIS = 2.392×</text>
+  <text x="418" y="173" font-family="JetBrains Mono, monospace" font-size="11" fill="#1D4ED8">MODIS–J1 ρ = 0.7857 (up from 0.7143) · J1–J2 ρ = 0.7500</text>
+</svg>

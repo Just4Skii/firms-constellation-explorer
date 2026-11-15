@@ -1,0 +1,1878 @@
+/* ============================================================================
+   FIRMS CONSTELLATION INTELLIGENCE — NASA EYES ON THE EARTH UI SYSTEM
+   Authentic full-viewport 3D Space & Earth Observatory (eyes.nasa.gov/apps/earth)
+   ============================================================================ */
+
+:root {
+  --bg-space: #000000;
+  --bg-hud: rgba(7, 12, 22, 0.78);
+  --bg-hud-strong: rgba(8, 14, 26, 0.90);
+  --bg-card: rgba(13, 22, 38, 0.78);
+  --bg-subtle: rgba(15, 23, 42, 0.65);
+  --border-hud: rgba(148, 163, 184, 0.20);
+  --border-bright: rgba(56, 189, 248, 0.45);
+
+  --text-primary: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+
+  --nasa-blue: #1D4ED8;
+  --nasa-layers-blue: #2B5086;
+  --nasa-event-red: #F87171;
+  --metric-count: #38BDF8;
+  --metric-frp: #F59E0B;
+  --metric-cluster: #2DD4BF;
+  --amber-gold: #FBBF24;
+  --emerald-ok: #34D399;
+  --rose-danger: #FB7185;
+
+  --font-display: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000000;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================================
+   1. FULL-VIEWPORT 3D EARTH & SPACE STAGE (100vw x 100vh)
+   ============================================================================ */
+.nasa-eyes-viewport {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  background: #000000;
+}
+
+#eyesWebGLCanvas,
+#eyesGlobeCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#eyesWebGLCanvas {
+  z-index: 1;
+  pointer-events: none;
+}
+
+#eyesGlobeCanvas {
+  z-index: 2;
+  cursor: grab;
+}
+
+#eyesGlobeCanvas:active {
+  cursor: grabbing;
+}
+
+.globe-tooltip {
+  position: fixed;
+  z-index: 60;
+  pointer-events: none;
+  background: rgba(5, 10, 20, 0.95);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: #F8FAFC;
+  font-size: 12px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.78);
+  max-width: 280px;
+}
+
+/* ============================================================================
+   2. TOP CENTERED EXPLORER COMMAND PILL (Direction A — Horizon Capsule)
+   ============================================================================ */
+.nasa-top-header {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 46px;
+  padding: 0 8px 0 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100vw - 32px);
+  z-index: 30;
+  background: rgba(7, 13, 27, 0.78);
+  backdrop-filter: blur(22px) saturate(155%);
+  -webkit-backdrop-filter: blur(22px) saturate(155%);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 999px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  pointer-events: auto;
+}
+
+.nasa-top-header > * {
+  pointer-events: auto;
+}
+
+.nasa-brand-cluster {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.nasa-meatball-badge {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 30%, #2563EB, #09132E);
+  border: 1px solid rgba(56, 189, 248, 0.55);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 8px;
+  line-height: 0.95;
+  letter-spacing: 0.04em;
+  color: #E0F2FE;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.32);
+  flex-shrink: 0;
+}
+
+.nasa-brand-sub {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.08;
+}
+
+.nasa-brand-sub .line-1 {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #38BDF8;
+  text-transform: uppercase;
+}
+
+.nasa-brand-sub .line-2 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #F8FAFC;
+}
+
+.nasa-brand-divider {
+  width: 1px;
+  height: 22px;
+  background: rgba(148, 163, 184, 0.16);
+  flex-shrink: 0;
+}
+
+.nasa-top-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.nav-pill-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px;
+  background: rgba(2, 6, 18, 0.58);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 999px;
+}
+
+.nasa-top-link {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #94A3B8;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: color 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+}
+
+.nasa-top-link .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.nasa-top-link:hover {
+  color: #F8FAFC;
+  background: rgba(148, 163, 184, 0.10);
+}
+
+.nasa-top-link.active {
+  color: #F8FAFC;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.24), rgba(56, 189, 248, 0.09));
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.18);
+}
+
+.nasa-top-link.featured-stories {
+  color: #FCD34D;
+}
+
+.nasa-top-link.featured-stories.active {
+  color: #FEF3C7;
+  background: rgba(245, 158, 11, 0.22);
+  border-color: rgba(245, 158, 11, 0.45);
+}
+
+.science-lab-wrap {
+  position: relative;
+}
+
+.nasa-lab-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #7DD3FC;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+}
+
+.nasa-lab-trigger:hover,
+.nasa-lab-trigger.open {
+  background: rgba(56, 189, 248, 0.24);
+  border-color: #38BDF8;
+  color: #FFFFFF;
+}
+
+.science-lab-popover {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 240px;
+  padding: 8px;
+  border-radius: 14px;
+  background: rgba(7, 13, 27, 0.92);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(56, 189, 248, 0.32);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.78);
+  display: none;
+  flex-direction: column;
+  gap: 3px;
+  z-index: 40;
+}
+
+.science-lab-popover.open {
+  display: flex;
+}
+
+.lab-pop-title {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #94A3B8;
+  padding: 4px 8px 6px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  margin-bottom: 3px;
+}
+
+.science-lab-popover .lab-item {
+  width: 100%;
+  justify-content: flex-start;
+  border-radius: 9px;
+  padding: 7px 10px;
+  font-size: 12px;
+  color: #CBD5E1;
+}
+
+.nasa-main-menu-btn {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  color: #CBD5E1;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+}
+
+.nasa-main-menu-btn:hover {
+  background: rgba(56, 189, 248, 0.16);
+  border-color: rgba(56, 189, 248, 0.42);
+  color: #FFFFFF;
+}
+
+/* ============================================================================
+   3. CLEAN UPPER-LEFT EXPLORER CAPTION
+   ============================================================================ */
+.nasa-bottom-left-hud {
+  position: fixed;
+  top: 20px;
+  left: 24px;
+  z-index: 18;
+  pointer-events: auto;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.nasa-left-event-callout {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  cursor: pointer;
+  padding: 5px 11px;
+  margin-top: 2px;
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.32);
+  backdrop-filter: blur(12px);
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+
+.nasa-left-event-callout:hover {
+  background: rgba(245, 158, 11, 0.24);
+  transform: translateX(2px);
+}
+
+.nasa-left-event-callout .ev-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #F59E0B;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.85);
+  flex-shrink: 0;
+}
+
+.nasa-left-event-callout .ev-headline {
+  color: #FDE68A;
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 340px;
+}
+
+.nasa-bl-title-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.nasa-bl-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: #F8FAFC;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.9);
+}
+
+.nasa-bl-plus-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.38);
+  color: #7DD3FC;
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.nasa-bl-date {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: #CBD5E1;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.85);
+}
+
+.nasa-bl-telemetry {
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ============================================================================
+   4. INTEGRATED TOP-PILL LAYERS TRIGGER & FROSTED CONTROL POPOVER
+   ============================================================================ */
+.nasa-layers-fab {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(148, 163, 184, 0.20);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #CBD5E1;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+}
+
+.nasa-layers-fab:hover,
+.nasa-layers-fab.active {
+  background: rgba(56, 189, 248, 0.20);
+  border-color: #38BDF8;
+  color: #FFFFFF;
+}
+
+.nasa-layers-popover {
+  position: fixed;
+  right: 20px;
+  top: 72px;
+  width: 310px;
+  background: rgba(7, 13, 27, 0.90);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: 16px;
+  padding: 14px 16px;
+  z-index: 32;
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.78);
+  display: none;
+}
+
+.nasa-layers-popover.open {
+  display: block;
+}
+
+.hud-field-group {
+  margin-bottom: 11px;
+}
+
+.hud-field-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94A3B8;
+  margin-bottom: 4px;
+}
+
+.hud-select {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.32);
+  color: #F8FAFC;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  padding: 6px 9px;
+  border-radius: 6px;
+  outline: none;
+}
+
+.hud-select:focus {
+  border-color: #38BDF8;
+}
+
+/* ============================================================================
+   5. ULTRA-SLIM 54PX BOTTOM HORIZON CAPSULE DOCK (Direction A)
+   ============================================================================ */
+.firms-earth-scrubber-deck {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 54px;
+  width: max-content;
+  max-width: calc(100vw - 24px);
+  padding: 0 12px;
+  background: rgba(7, 13, 27, 0.78);
+  backdrop-filter: blur(22px) saturate(155%);
+  -webkit-backdrop-filter: blur(22px) saturate(155%);
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  border-radius: 999px;
+  z-index: 26;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.firms-earth-scrubber-deck.minimized {
+  display: flex;
+}
+
+.horizon-dock-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.horizon-dock-row::-webkit-scrollbar {
+  display: none;
+}
+
+.dock-sep {
+  width: 1px;
+  height: 24px;
+  background: rgba(148, 163, 184, 0.16);
+  flex-shrink: 0;
+}
+
+.fe-transport-btns {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.fe-step-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  color: #94A3B8;
+  font-size: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.fe-step-btn:hover {
+  color: #FFFFFF;
+  border-color: rgba(56, 189, 248, 0.45);
+}
+
+.fe-play-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #FBBF24, #F59E0B);
+  border: none;
+  color: #020617;
+  font-size: 12px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 0 18px rgba(245, 158, 11, 0.45);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.fe-play-circle.fe-play-sm {
+  width: 24px;
+  height: 24px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  color: #94A3B8;
+  font-size: 10px;
+  box-shadow: none;
+}
+
+.fe-play-circle:hover {
+  transform: scale(1.06);
+}
+
+.dock-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #CBD5E1;
+  background: rgba(15, 23, 42, 0.68);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.dock-chip:hover,
+.dock-chip.open {
+  color: #FFFFFF;
+  border-color: rgba(56, 189, 248, 0.45);
+}
+
+.dock-chip-amber {
+  color: #FDE68A;
+  border-color: rgba(245, 158, 11, 0.38);
+  background: rgba(245, 158, 11, 0.12);
+}
+
+.dock-chip-amber:hover,
+.dock-chip-amber.open {
+  background: rgba(245, 158, 11, 0.22);
+  border-color: #F59E0B;
+}
+
+.dock-chip .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* Sleek 8-Day Spark Strip Inside 54px Dock */
+.eyes-timeline-track {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.eyes-day-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 4px 7px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.eyes-day-slot:hover {
+  background: rgba(56, 189, 248, 0.10);
+  border-color: rgba(56, 189, 248, 0.28);
+}
+
+.eyes-day-slot.active {
+  background: rgba(245, 158, 11, 0.18);
+  border-color: rgba(245, 158, 11, 0.48);
+}
+
+.eyes-day-slot.quarantined {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.eyes-day-lbl {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #CBD5E1;
+  white-space: nowrap;
+  line-height: 1.1;
+}
+
+.eyes-day-slot.active .eyes-day-lbl {
+  color: #FDE68A;
+}
+
+.eyes-day-bar {
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(56, 189, 248, 0.55);
+  transition: width 0.2s ease, background 0.2s ease;
+}
+
+.eyes-day-slot.active .eyes-day-bar {
+  background: #F59E0B;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.65);
+}
+
+.dock-clock {
+  font-size: 11px;
+  color: #94A3B8;
+  padding: 0 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.dock-icon-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.nasa-icon-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  color: #94A3B8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 13px;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.nasa-icon-btn:hover,
+.nasa-icon-btn.active {
+  color: #FFFFFF;
+  background: rgba(56, 189, 248, 0.18);
+  border-color: rgba(56, 189, 248, 0.45);
+}
+
+/* Popover Drawers Anchored Smoothly Above the Bottom Dock */
+.dock-popover {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  background: rgba(7, 13, 27, 0.94);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: 16px;
+  padding: 12px 14px;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.82);
+  display: none;
+  z-index: 35;
+}
+
+.dock-popover.open {
+  display: block;
+}
+
+.dock-year-popover {
+  left: 110px;
+  width: min(640px, 90vw);
+}
+
+.dock-sat-popover {
+  right: 85px;
+  width: min(440px, 88vw);
+}
+
+.dock-pop-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.sat-pill {
+  background: rgba(30, 41, 59, 0.82);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  color: #CBD5E1;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sat-pill.active {
+  background: rgba(37, 99, 235, 0.28);
+  border-color: #60A5FA;
+  color: #FFFFFF;
+}
+
+.sat-pill.disabled-feed {
+  opacity: 0.58;
+  border-style: dashed;
+  cursor: not-allowed;
+}
+
+.sat-pill .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* ============================================================================
+   7. TRANSLUCENT GLASS ANALYTICAL DRAWERS (OVER THE 3D EARTH)
+   ============================================================================ */
+.nasa-glass-drawer {
+  position: fixed;
+  top: 74px;
+  right: 18px;
+  bottom: 84px;
+  width: min(860px, 94vw);
+  background: rgba(6, 11, 22, 0.94);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: 14px;
+  z-index: 28;
+  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.85);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: text;
+}
+
+.nasa-glass-drawer.active {
+  display: flex;
+  animation: slideInRight 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.drawer-header {
+  padding: 14px 20px;
+  background: rgba(15, 23, 42, 0.78);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.20);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.drawer-header-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.drawer-header-sub {
+  font-size: 12px;
+  color: #94A3B8;
+  margin-top: 2px;
+}
+
+.drawer-close-btn {
+  background: rgba(30, 41, 59, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  color: #F8FAFC;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.drawer-close-btn:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: #F87171;
+}
+
+.drawer-body {
+  padding: 18px 20px 28px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* ============================================================================
+   8. CARDS, TABLES & BADGES INSIDE GLASS DRAWERS
+   ============================================================================ */
+.card {
+  background: rgba(15, 23, 42, 0.68);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #F8FAFC;
+  margin: 0;
+}
+
+.card-subtitle {
+  font-size: 12px;
+  color: #94A3B8;
+  margin-top: 2px;
+}
+
+.kpi-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.kpi-box {
+  background: rgba(15, 23, 42, 0.78);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.kpi-box .label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #94A3B8;
+  text-transform: uppercase;
+}
+
+.kpi-box .val {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 4px 0 2px;
+}
+
+.kpi-box .sub {
+  font-size: 10.5px;
+  color: #CBD5E1;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.data-table th {
+  text-align: left;
+  padding: 8px 10px;
+  background: rgba(30, 41, 59, 0.75);
+  color: #CBD5E1;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.data-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+  color: #E2E8F0;
+}
+
+.data-table td.num,
+.data-table th.num {
+  text-align: right;
+  font-family: var(--font-mono);
+}
+
+.data-table tr:hover td {
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.data-table tr.selected-row td {
+  background: rgba(37, 99, 235, 0.22);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.badge-ok {
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(52, 211, 153, 0.45);
+  color: #6EE7B7;
+}
+
+.badge-warn {
+  background: rgba(245, 158, 11, 0.18);
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  color: #FCD34D;
+}
+
+.badge-danger {
+  background: rgba(244, 63, 94, 0.20);
+  border: 1px solid rgba(251, 113, 133, 0.50);
+  color: #FDA4AF;
+}
+
+.badge-info,
+.badge-count {
+  background: rgba(14, 165, 233, 0.20);
+  border: 1px solid rgba(56, 189, 248, 0.48);
+  color: #7DD3FC;
+}
+
+.badge-frp {
+  background: rgba(234, 88, 12, 0.22);
+  border: 1px solid rgba(251, 146, 60, 0.50);
+  color: #FDBA74;
+}
+
+.badge-neutral {
+  background: rgba(51, 65, 85, 0.65);
+  border: 1px solid rgba(148, 163, 184, 0.30);
+  color: #CBD5E1;
+}
+
+.btn-action {
+  background: rgba(37, 99, 235, 0.28);
+  border: 1px solid rgba(96, 165, 250, 0.5);
+  color: #F8FAFC;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-action:hover {
+  background: rgba(37, 99, 235, 0.45);
+}
+
+.app-toast {
+  position: fixed;
+  top: 74px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(8, 15, 28, 0.95);
+  border: 1px solid #38BDF8;
+  color: #F8FAFC;
+  font-size: 12px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  z-index: 80;
+  display: none;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.75);
+}
+
+/* ============================================================================
+   9. FUTURISTIC GLASS FIRE INSPECTION CARD (Opens on Specific Fire Click Only)
+   ============================================================================ */
+.fire-recon-popup {
+  position: fixed;
+  top: 76px;
+  right: 22px;
+  width: min(440px, 92vw);
+  background: rgba(6, 11, 22, 0.84);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(56, 189, 248, 0.34);
+  border-radius: 16px;
+  z-index: 27;
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.78), 0 0 28px rgba(56, 189, 248, 0.10);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: text;
+}
+
+.fire-recon-popup.open {
+  display: flex;
+  animation: popInRecon 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popInRecon {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.recon-header {
+  padding: 12px 14px;
+  background: rgba(15, 23, 42, 0.65);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.16);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.recon-title {
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.recon-sub {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: #93C5FD;
+  margin-top: 2px;
+}
+
+.recon-viewport {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  background: #020617;
+  overflow: hidden;
+}
+
+#reconImageryCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#reconGibsImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.recon-band-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  padding: 8px 12px;
+  background: rgba(10, 17, 30, 0.9);
+  border-top: 1px solid rgba(148, 163, 184, 0.16);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.recon-band-btn {
+  background: rgba(30, 41, 59, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  color: #CBD5E1;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 5px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.recon-band-btn.active {
+  background: rgba(37, 99, 235, 0.38);
+  border-color: #38BDF8;
+  color: #FFFFFF;
+}
+
+.recon-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 10px 12px 6px;
+}
+
+.recon-stat-cell {
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+
+.recon-stat-cell .k {
+  font-size: 9.5px;
+  color: #94A3B8;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.recon-stat-cell .v {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-top: 2px;
+}
+
+.recon-footer {
+  padding: 8px 12px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 1220px) {
+  .nasa-bottom-left-hud {
+    top: 72px;
+    left: 16px;
+  }
+}
+
+@media (max-width: 900px) {
+  .nasa-brand-sub {
+    display: none;
+  }
+  .nasa-top-header {
+    padding: 0 8px;
+    gap: 6px;
+  }
+  .horizon-dock-row {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .horizon-dock-row::-webkit-scrollbar {
+    display: none;
+  }
+  .kpi-grid-4,
+  .grid-2,
+  .grid-3,
+  .fs-stories-grid {
+    grid-template-columns: 1fr;
+  }
+  .nasa-bl-title {
+    font-size: 21px;
+  }
+  .fire-recon-popup {
+    right: 12px;
+    top: 70px;
+  }
+}
+
+/* ========================================================================
+   HISTORICAL YEAR SELECTOR & FIRE STORIES DOCUMENTARY STYLES
+   ======================================================================== */
+.eyes-year-track {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+
+.eyes-year-group-tag {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+
+.eyes-year-group-tag.benchmark {
+  color: #34D399;
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.eyes-year-group-tag.casestudy {
+  color: #38BDF8;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  margin-left: 4px;
+}
+
+.eyes-year-coverage-note {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: #94A3B8;
+  margin-left: auto;
+}
+
+.eyes-year-pill {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  color: #CBD5E1;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.eyes-year-pill.benchmark {
+  border-color: rgba(52, 211, 153, 0.4);
+  color: #A7F3D0;
+}
+
+.eyes-year-pill:hover {
+  border-color: #38BDF8;
+  color: #FFFFFF;
+}
+
+.eyes-year-pill.active {
+  background: rgba(245, 158, 11, 0.24);
+  border-color: #F59E0B;
+  color: #FDE68A;
+}
+
+.fs-collection-banner {
+  background: rgba(15, 23, 42, 0.82);
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.fs-stories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.fs-story-card {
+  background: rgba(11, 18, 32, 0.94);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.fs-card-media {
+  position: relative;
+  height: 175px;
+  background: #040914;
+  overflow: hidden;
+}
+
+.fs-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.fs-year-pill {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(2, 6, 23, 0.86);
+  border: 1px solid rgba(251, 191, 36, 0.5);
+  color: #FDE68A;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.fs-card-body {
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.fs-card-title {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #F8FAFC;
+  margin-bottom: 4px;
+}
+
+.fs-card-sub {
+  font-size: 12px;
+  color: #94A3B8;
+  line-height: 1.4;
+  margin-bottom: 10px;
+  flex: 1;
+}
+
+.fs-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 10.5px;
+  color: #CBD5E1;
+  margin-bottom: 10px;
+}
+
+.fs-card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.fs-detail-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.fs-evidence-img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  display: block;
+}
+
+.fs-scrubber-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 12px;
+}
+
+.fs-chapters-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 760px) {
+  .fs-chapters-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.fs-chapter-btn {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  color: #CBD5E1;
+  border-radius: 6px;
+  padding: 7px 8px;
+  font-size: 11px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.fs-chapter-btn.active {
+  background: rgba(37, 99, 235, 0.28);
+  border-color: #38BDF8;
+  color: #FFFFFF;
+}
+
+.fs-transcript-box {
+  background: rgba(2, 6, 23, 0.72);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+/* ============================================================================
+   8. EARTH INTELLIGENCE · LAYERS, TEMPORAL MODE & HEX EVIDENCE INSPECTOR
+   ============================================================================ */
+.ei-selected-pill {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #7DD3FC;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+.ei-selected-pill:hover {
+  background: rgba(56, 189, 248, 0.25);
+  color: #FFFFFF;
+}
+
+.ei-mode-banner {
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(2, 6, 23, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  backdrop-filter: blur(12px);
+  max-width: 440px;
+}
+.ei-mode-tag {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.ei-mode-live { background: rgba(16, 185, 129, 0.22); color: #34D399; }
+.ei-mode-historical { background: rgba(245, 158, 11, 0.22); color: #FBBF24; }
+.ei-mode-forecast { background: rgba(139, 92, 246, 0.24); color: #C4B5FD; }
+.ei-mode-sub {
+  font-size: 10px;
+  color: #CBD5E1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 280px;
+}
+
+.ei-layers-popover {
+  display: none;
+  position: fixed;
+  top: 78px;
+  left: 20px;
+  width: 348px;
+  max-height: calc(100vh - 170px);
+  background: rgba(5, 10, 22, 0.90);
+  backdrop-filter: blur(22px) saturate(165%);
+  border: 1px solid rgba(56, 189, 248, 0.30);
+  border-radius: 14px;
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.75);
+  z-index: 62;
+  flex-direction: column;
+  overflow: hidden;
+}
+.ei-layers-popover.open {
+  display: flex;
+}
+.ei-layers-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+}
+.ei-layers-kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  color: #38BDF8;
+}
+.ei-layers-sub {
+  font-size: 11px;
+  color: #94A3B8;
+  margin-top: 2px;
+}
+.ei-close-btn {
+  background: transparent;
+  border: none;
+  color: #94A3B8;
+  font-size: 15px;
+  cursor: pointer;
+}
+.ei-layers-scroll {
+  overflow-y: auto;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ei-layer-group-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #94A3B8;
+  margin-bottom: 5px;
+}
+.ei-layer-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 9px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.58);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  color: #E2E8F0;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.14s ease;
+}
+.ei-layer-row:hover {
+  border-color: rgba(56, 189, 248, 0.45);
+  background: rgba(30, 41, 59, 0.72);
+}
+.ei-layer-row.active {
+  border-color: rgba(56, 189, 248, 0.65);
+  background: rgba(14, 116, 144, 0.24);
+}
+.ei-layer-row.muted {
+  opacity: 0.55;
+}
+.ei-layer-check {
+  width: 17px;
+  height: 17px;
+  border-radius: 5px;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #38BDF8;
+  flex-shrink: 0;
+}
+.ei-layer-row.active .ei-layer-check {
+  background: rgba(56, 189, 248, 0.25);
+  border-color: #38BDF8;
+}
+.ei-layer-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.ei-layer-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #F8FAFC;
+}
+.ei-layer-sub {
+  font-size: 10px;
+  color: #94A3B8;
+  line-height: 1.25;
+}
+.ei-layer-pill {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+.ei-layers-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  background: rgba(2, 6, 23, 0.78);
+  border-top: 1px solid rgba(148, 163, 184, 0.16);
+  font-size: 10px;
+  color: #94A3B8;
+}
+.ei-foot-link {
+  background: transparent;
+  border: none;
+  color: #38BDF8;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.temporal-mode-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  flex-shrink: 0;
+}
+.temporal-mode-pill {
+  border: none;
+  background: transparent;
+  color: #94A3B8;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 7px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.temporal-mode-pill:hover {
+  color: #E2E8F0;
+}
+.temporal-mode-pill.active[data-temporal-mode="historical"] {
+  background: rgba(245, 158, 11, 0.24);
+  color: #FDE68A;
+}
+.temporal-mode-pill.active[data-temporal-mode="live"] {
+  background: rgba(16, 185, 129, 0.24);
+  color: #34D399;
+}
+.temporal-mode-pill.active[data-temporal-mode="forecast"] {
+  background: rgba(139, 92, 246, 0.26);
+  color: #DDD6FE;
+}
+
+.ei-legend-bar-wrap {
+  position: fixed;
+  right: 22px;
+  bottom: 84px;
+  z-index: 12;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: rgba(5, 10, 22, 0.80);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  max-width: 280px;
+}
+.ei-legend-title {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #E2E8F0;
+  display: block;
+  margin-bottom: 4px;
+}
+.ei-legend-bar {
+  height: 7px;
+  width: 210px;
+  border-radius: 999px;
+}
+.ei-legend-scale {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: #94A3B8;
+  margin-top: 3px;
+}
+.ei-legend-chip {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #7DD3FC;
+}
+
+.ei-evidence-popup {
+  display: none;
+  position: fixed;
+  right: 22px;
+  top: 76px;
+  width: 390px;
+  max-height: calc(100vh - 175px);
+  overflow-y: auto;
+  background: rgba(5, 10, 22, 0.92);
+  backdrop-filter: blur(22px);
+  border: 1px solid rgba(45, 212, 191, 0.36);
+  border-radius: 14px;
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.78);
+  z-index: 64;
+  padding: 12px 14px;
+}
+.ei-evidence-popup.open {
+  display: block;
+}
+.ei-evidence-body {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.ei-ev-banner {
+  font-size: 10.5px;
+  line-height: 1.4;
+  padding: 7px 9px;
+  border-radius: 7px;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  background: rgba(14, 116, 144, 0.16);
+  color: #BAE6FD;
+}
+.ei-ev-banner.warn {
+  border-color: rgba(245, 158, 11, 0.35);
+  background: rgba(180, 83, 9, 0.18);
+  color: #FDE68A;
+}
+.ei-ev-section-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94A3B8;
+}
+.ei-ev-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.ei-ev-cell {
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 7px;
+  padding: 6px 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ei-ev-cell span {
+  font-size: 9.5px;
+  color: #94A3B8;
+}
+.ei-ev-cell b {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #F8FAFC;
+}
+.ei-ev-doc {
+  background: rgba(2, 6, 23, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 7px;
+  padding: 8px 10px;
+  font-size: 10.5px;
+  line-height: 1.45;
+  color: #CBD5E1;
+}

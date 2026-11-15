@@ -1,0 +1,33 @@
+readiness_id,objective,data_need,candidate_source,region,coverage,resolution,access_status,verification_status,identifiability,priority,notes
+R01,O1_IGNITION,Ignition timestamp,Alberta historical wildfire data,Alberta,2006-2025,event,ACQUIRED_PILOT,YES_AGENCY_START,PARTIAL,HIGH,"FIRE_START_DATE present; agency timestamp, timezone unspecified, not verified physical ignition"
+R02,O1_IGNITION,Ignition cause,Alberta historical wildfire data,Alberta,2006-2025,event,ACQUIRED,YES,PARTIAL,HIGH,"GENERAL_CAUSE / TRUE_CAUSE present"
+R03,O1_IGNITION,Ignition location,Alberta historical wildfire data,Alberta,2006-2025,point,ACQUIRED,YES,PARTIAL,HIGH,"LATITUDE/LONGITUDE present; precision must be declared"
+R04,O1_IGNITION,Verified ignition time,Alberta historical + incident logs,Alberta,2006-2025,event,ACQUIRED_PILOT,PARTIAL_AGENCY,PARTIAL,HIGH,"Agency start/discovery/report times; physical ignition and timezone still unverified"
+R05,O1_IGNITION,Discovery/reporting time,Alberta historical wildfire data,Alberta,2006-2025,event,ACQUIRED,YES,PARTIAL,HIGH,"DISCOVERED_DATE and REPORTED_DATE present; timezone unspecified"
+R06,O1_IGNITION,Reporting delay,Derived from start/report timestamps,Alberta,2006-2025,event,ACQUIRED_PILOT,YES_DERIVED,PARTIAL,HIGH,"Can compute report/start lag; semantics still agency-record based"
+R07,O2_OBSERVATION,Agency patrol coverage,Provincial patrol/response records,Alberta,unknown,zone/day,NOT_ACQUIRED,UNVERIFIED,UNKNOWN,HIGH,Access/patrol critical
+R08,O2_OBSERVATION,Public reporting coverage,911/emergency dispatch,Alberta,unknown,event,NOT_ACQUIRED,UNVERIFIED,UNKNOWN,MEDIUM,Privacy/access constraints
+R09,O2_OBSERVATION,Satellite overpass,MODIS/VIIRS/GOES granules,Alberta,2018-2025,overpass,ACQUIRED_WINDOW,YES_PILOT,PARTIAL,HIGH,"One-week MODIS 2022-06-01..07: 28 files but only 1 Alberta-valid overpass; 13 wrong coverage; fixed-time selection invalid"
+R10,O2_OBSERVATION,Cloud mask,MODIS/VIIRS/GOES cloud products,Alberta,2018-2025,pixel/overpass,ACQUIRED_WINDOW,YES_PILOT,PARTIAL,HIGH,"MODIS MOD35/MYD35 + GOES ACMF; only 1 valid Alberta MODIS target overpass, target cloudy"
+R11,O2_OBSERVATION,View geometry,MODIS/VIIRS geolocation,Alberta,2018-2025,pixel/overpass,ACQUIRED_WINDOW,YES_PILOT,PARTIAL,HIGH,"MODIS Sensor_Zenith 46.8-60.0 deg in valid overpass; GOES FDCF lacks pixel view geometry"
+R12,O2_OBSERVATION,Active-fire detection,FIRMS MODIS/VIIRS archive,Alberta,2018-2025,overpass,ACQUIRED_WINDOW,YES_PILOT,PARTIAL,HIGH,"MODIS/GOES active-fire pilot; 0 Alberta detections in valid MODIS overpass and 0 GOES Alberta pixels"
+R13,O2_OBSERVATION,Sensor transition history,MODIS/VIIRS/NOAA-20/21 metadata,Alberta,2018-2025,overpass,ACCESSIBLE_NOT_ACQUIRED,VERIFIED_URL,PARTIAL,MEDIUM,"Platform metadata present in FIRMS; no multi-year transition table"
+R14,O3_ENVIRONMENT,Daily meteorology,NASA POWER,Alberta,1981-present,point/day,ACQUIRED,YES,PARTIAL,HIGH,Reanalysis not forecast
+R15,O3_ENVIRONMENT,Hourly meteorology,ERA5/ERA5-Land,Alberta,1940-present,grid/hour,ACCESSIBLE_NOT_ACQUIRED,VERIFIED_URL,PARTIAL,HIGH,CDS account required
+R16,O3_ENVIRONMENT,Station observations,ECCC station data,Alberta,varies,station/hour,ACCESS_UNCERTAIN,UNVERIFIED,PARTIAL,HIGH,Noon/10m FWI inputs
+R17,O3_ENVIRONMENT,Fuel moisture,Field/LFMC/satellite proxies,Alberta,sparse,varies,ACCESS_UNCERTAIN,UNVERIFIED,PARTIAL,HIGH,Key uncertainty
+R18,O3_ENVIRONMENT,Soil moisture,SMAP/ESA CCI,Alberta,2010-present,grid/daily,ACCESSIBLE_NOT_ACQUIRED,VERIFIED_URL,PARTIAL,MEDIUM,Skin depth
+R19,O3_ENVIRONMENT,Vegetation condition,MODIS NDVI/EVI,Alberta,2000-present,250m/16-day,ACCESSIBLE_NOT_ACQUIRED,VERIFIED_URL,PARTIAL,MEDIUM,Cloud/view effects
+R20,O3_ENVIRONMENT,Lightning,WWLLN/GLD360/Blitzortung,Alberta,varies,event,ACCESS_UNCERTAIN,UNVERIFIED,PARTIAL,HIGH,Detection efficiency varies
+R21,O3_ENVIRONMENT,Fuel type,Canadian FBP fuel map/LANDFIRE,Alberta,static/periodic,30m/vector,ACCESS_UNCERTAIN,UNVERIFIED,PARTIAL,HIGH,Needed for FBP
+R22,O3_ENVIRONMENT,Terrain,Copernicus DEM,Alberta,static,30m,ACCESSIBLE_NOT_ACQUIRED,VERIFIED_URL,YES,MEDIUM,Slope/aspect
+R23,O4_FORECAST,Archived NWP forecasts,ECMWF IFS/ENS,Alberta,archive dependent,grid/hour,ACCESS_UNCERTAIN,UNVERIFIED,PARTIAL,HIGH,Critical for forecast feasibility
+R24,O4_FORECAST,Archived reforecasts,NOAA GEFS/ECMWF reforecast,Alberta,archive dependent,grid/day,ACCESS_UNCERTAIN,UNVERIFIED,PARTIAL,HIGH,Long archive needed
+R25,O4_FORECAST,Forecast issue time,NWP metadata,Alberta,archive dependent,run,ACCESS_UNCERTAIN,UNVERIFIED,PARTIAL,HIGH,Lead-time integrity
+R26,O4_FORECAST,Forecast verification,Analysis/observations,Alberta,archive dependent,grid/day,ACCESS_UNCERTAIN,UNVERIFIED,PARTIAL,HIGH,Needed for error weighting
+R27,O5_TARGET,Actual ignition target,Verified physical ignition register,Alberta/Canada,unknown,event,NOT_ACQUIRED,UNVERIFIED,UNKNOWN,CRITICAL,"Agency FIRE_START_DATE exists but is not verified physical ignition; do not register"
+R28,O5_TARGET,First reported fire target,Alberta historical wildfire data,Alberta,2006-2025,event,ACQUIRED_PILOT,YES,PARTIAL,HIGH,"DISCOVERED_DATE/REPORTED_DATE present; distinct from ignition"
+R29,O5_TARGET,New documented record target,NFDB,Alberta,2018-2025,cell-day,ACQUIRED,YES,PARTIAL,HIGH,Current AMFI-01 target
+R30,O5_TARGET,Detection target,MODIS/VIIRS/GOES active fire,Alberta,2018-2025,overpass,ACQUIRED_WINDOW,YES_PILOT,PARTIAL,HIGH,"Pilot detection outcome; not a fire census"
+R31,O5_TARGET,Negative observation census,Independent absence/coverage data,Alberta,unknown,cell-day,NOT_ACQUIRED,UNVERIFIED,UNKNOWN,CRITICAL,NFDB zero is not absence
+R32,O5_TARGET,Event identity crosswalk,Provincial/NFDB fire numbers,Alberta/Canada,unknown,event,ACCESS_UNCERTAIN,UNVERIFIED,PARTIAL,HIGH,"FIRE_NUMBER can be matched; near-duplicate resolution still required"
