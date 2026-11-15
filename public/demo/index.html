@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Seven-slide public demo of Eyes on Fires, an Earth-observation explorer for wildfire intelligence.">
+<meta name="ai-assisted-development" content="ChatGPT and DeepSeek assisted code drafting, debugging, research organization, and presentation copy.">
+<title>Eyes on Fires — Project Demo</title>
+<style>
+:root{--bg:#06111b;--panel:#0c202d;--panel2:#102b3a;--line:#244858;--cyan:#49d4e2;--mint:#8bd9bb;--amber:#f6a15a;--white:#f2f6f3;--muted:#a3b9bd;--dim:#6f9098}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--white);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body{background-image:radial-gradient(ellipse at 80% 58%,rgba(23,88,104,.28),transparent 44%),linear-gradient(135deg,#06111b 0%,#081722 55%,#06121d 100%)}
+.deck{position:relative;width:100%;height:100%;isolation:isolate}
+.deck:before{content:"";position:absolute;inset:0;z-index:-1;opacity:.35;background-image:linear-gradient(rgba(71,142,153,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(71,142,153,.08) 1px,transparent 1px);background-size:72px 72px}
+.slide{position:absolute;inset:0;padding:clamp(20px,4vw,56px) clamp(20px,4.5vw,72px) 76px;display:none;overflow:auto;scrollbar-width:thin;scrollbar-color:#315766 transparent}
+.slide.active{display:flex;flex-direction:column;animation:enter .28s ease-out}
+@keyframes enter{from{opacity:.35;transform:translateY(8px)}to{opacity:1;transform:none}}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:30px}
+.brand{font-size:11px;letter-spacing:.17em;color:var(--cyan);font-weight:800;text-transform:uppercase}
+.status{border:1px solid var(--line);border-radius:20px;padding:7px 12px;color:var(--muted);font-size:11px;letter-spacing:.06em}
+.kicker{font-size:11px;letter-spacing:.19em;text-transform:uppercase;color:var(--cyan);font-weight:800;margin-bottom:16px}
+h1,h2,h3,p{margin-top:0}h1{font-size:clamp(48px,7vw,92px);line-height:.93;letter-spacing:-.055em;margin-bottom:22px;max-width:720px}
+h2{font-size:clamp(30px,4vw,50px);line-height:1.02;letter-spacing:-.04em;margin-bottom:12px}
+h3{font-size:18px;line-height:1.13;margin-bottom:10px}
+.lead{font-size:clamp(16px,1.7vw,22px);line-height:1.45;color:#b8d0d2;max-width:750px}
+.muted{color:var(--muted);line-height:1.5}
+.small{font-size:12px;color:var(--dim);line-height:1.45}
+.grid{display:grid;gap:14px}
+.card{background:linear-gradient(150deg,rgba(16,43,58,.93),rgba(9,27,39,.96));border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 14px 40px rgba(0,0,0,.18)}
+.tag{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:99px;padding:7px 11px;font-size:10px;letter-spacing:.11em;text-transform:uppercase;font-weight:800;color:var(--cyan);background:rgba(10,34,47,.8)}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block;background:var(--cyan);box-shadow:0 0 12px currentColor}
+.accent{color:var(--cyan)}.amber{color:var(--amber)}.mint{color:var(--mint)}
+.cover{display:grid;grid-template-columns:1.03fr 1fr;gap:36px;align-items:center;min-height:calc(100% - 65px)}
+.planet-wrap{position:relative;aspect-ratio:1;max-width:min(46vw,560px);justify-self:center;width:100%;display:grid;place-items:center}
+.planet{width:79%;height:79%;border-radius:50%;background-image:linear-gradient(135deg,rgba(6,16,28,.06),rgba(3,10,19,.55)),url('/assets/earth/blue_marble_2048.jpg');background-size:cover;background-position:center;box-shadow:0 0 50px rgba(42,164,201,.28),inset -28px -18px 55px rgba(0,0,0,.68),inset 10px 5px 22px rgba(87,197,227,.18);position:relative}
+.planet:after{content:"";position:absolute;inset:-4%;border-radius:50%;border:1px solid rgba(88,201,227,.32);box-shadow:0 0 40px rgba(50,195,224,.18)}
+.orbit{position:absolute;width:100%;height:62%;border:1px solid rgba(79,198,218,.28);border-radius:50%;transform:rotate(-27deg)}
+.orbit.o2{width:110%;height:72%;transform:rotate(54deg);border-color:rgba(246,161,90,.22)}
+.heat{position:absolute;width:10px;height:10px;border-radius:50%;background:#ff785b;box-shadow:0 0 8px 4px rgba(255,94,65,.35),0 0 24px rgba(255,94,65,.25)}
+.heat.a{top:36%;left:70%}.heat.b{top:58%;left:60%}.heat.c{top:66%;left:72%}
+.cover-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.cover-bottom{font-size:11px;color:var(--dim);letter-spacing:.1em;margin-top:28px}
+.app-layout{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(250px,.8fr);gap:18px;min-height:0;flex:1}
+.app-frame{border:1px solid #2d6071;border-radius:20px;overflow:hidden;background:#02070d;min-height:410px;position:relative}
+.app-frame iframe{width:100%;height:100%;min-height:410px;border:0;background:#02070d}
+.app-side{display:flex;flex-direction:column;gap:12px}
+.callout{flex:1}
+.callout .num{font-size:10px;letter-spacing:.16em;color:var(--amber);font-weight:800;margin-bottom:10px}
+.callout h3{font-size:17px}
+.callout p{font-size:13px;color:var(--muted);line-height:1.45;margin:0}
+.layers{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:28px}
+.layer-card{min-height:245px;display:flex;flex-direction:column}
+.layer-no{font-size:11px;font-weight:800;letter-spacing:.16em;margin-bottom:26px}
+.layer-card ul{padding-left:18px;color:var(--muted);font-size:13px;line-height:1.8;margin:4px 0 20px}
+.card-foot{border-top:1px solid var(--line);padding-top:13px;margin-top:auto;font-size:11px;font-weight:800;letter-spacing:.04em}
+.modebar{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:16px;padding:14px 18px;border:1px solid var(--line);border-radius:14px;background:rgba(6,24,36,.78)}
+.modebar .mode{border:1px solid #315969;padding:8px 12px;border-radius:999px;font-size:10px;letter-spacing:.12em;font-weight:800;color:var(--cyan)}
+.modebar .explain{font-size:12px;color:var(--muted);margin-left:auto;max-width:430px}
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:30px}
+.step{position:relative;min-height:245px;padding:18px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(150deg,#102c3b,#091b28)}
+.step:not(:last-child):after{content:"";position:absolute;right:-11px;top:50%;width:11px;height:2px;background:var(--cyan)}
+.step .number{font-size:11px;color:var(--amber);font-weight:800;letter-spacing:.14em}
+.step h3{margin-top:22px;font-size:16px}
+.step p{font-size:12px;color:var(--muted);line-height:1.5}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px;padding:18px;border:1px solid var(--line);border-radius:14px;background:#081b28}
+.metric strong{font-size:24px;display:block}.metric span{font-size:10px;color:var(--muted)}
+.lab-layout{display:grid;grid-template-columns:.8fr 1.5fr;gap:18px;margin-top:26px}
+.menu-list{display:grid;gap:7px;margin-top:17px}
+.menu-item{padding:10px 12px;border-radius:10px;background:#091b29;border:1px solid transparent;font-size:12px;color:var(--muted)}
+.menu-item.sel{border-color:#34778a;background:#102d3c;color:var(--white)}
+.metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.metric-card{border:1px solid #264b5c;border-radius:12px;padding:15px;background:#091c29}
+.metric-card b{font-size:12px;color:var(--cyan);margin-right:10px}.metric-card strong{font-size:12px}
+.metric-card p{font-size:11px;color:var(--muted);margin:9px 0 0}
+.hygiene{margin-top:12px;padding:16px;border:1px solid #785a36;border-radius:14px;background:rgba(58,39,23,.3);font-size:12px;color:#d8d0c1;line-height:1.7}
+.research{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:28px}
+.research .card{min-height:270px;display:flex;flex-direction:column}
+.research .state{display:inline-flex;font-size:9px;letter-spacing:.12em;font-weight:800;border:1px solid var(--line);border-radius:99px;padding:6px 9px;margin-bottom:26px;align-self:flex-start}
+.research p{color:var(--muted);font-size:13px;line-height:1.55}
+.research .foot{border-top:1px solid var(--line);padding-top:14px;margin-top:auto;font-size:10px;font-weight:800;letter-spacing:.07em}
+.notice{margin-top:15px;border:1px solid #79543b;background:rgba(52,35,26,.55);border-radius:12px;padding:13px;text-align:center;font-size:12px;font-weight:700}
+.future-layout{display:grid;grid-template-columns:1.45fr .8fr;gap:18px;margin-top:24px}
+.roadmap{display:grid;gap:18px}
+.roadrow{display:grid;grid-template-columns:58px 1fr;gap:12px;align-items:start}
+.roadrow .stage{font-size:10px;letter-spacing:.15em;color:var(--cyan);font-weight:900;padding-top:2px}
+.roadrow h3{font-size:15px;margin:0 0 5px}
+.roadrow p{font-size:12px;color:var(--muted);margin:0}
+.links a{display:block;color:var(--cyan);text-decoration:none;border:1px solid var(--line);padding:12px;border-radius:10px;margin-top:10px;font-size:12px}
+.disclosure{margin-top:16px;padding:13px 16px;border:1px solid #364a51;border-radius:12px;background:#0a1b25;font-size:11px;color:var(--muted);line-height:1.45}
+.controls{position:absolute;left:0;right:0;bottom:0;height:62px;display:flex;align-items:center;justify-content:center;gap:14px;border-top:1px solid rgba(69,132,149,.32);background:rgba(4,14,23,.93);backdrop-filter:blur(12px);z-index:50}
+.controls button{background:#102b39;border:1px solid #315b69;color:var(--white);border-radius:999px;padding:9px 15px;font:700 11px inherit;cursor:pointer}
+.controls button.primary{background:var(--cyan);color:#031119;border-color:var(--cyan)}
+.counter{color:var(--muted);font-size:11px;letter-spacing:.12em;min-width:64px;text-align:center}
+.progress{position:absolute;left:0;bottom:61px;height:3px;background:#193746;width:100%}
+.progress>i{display:block;height:100%;width:14.2857%;background:var(--cyan);transition:width .2s}
+@media(max-width:900px){.slide{padding:20px 18px 76px}.cover,.app-layout,.future-layout,.lab-layout{grid-template-columns:1fr}.planet-wrap{max-width:260px;order:-1}.cover{gap:8px}.cover h1{font-size:48px}.app-frame,.app-frame iframe{min-height:330px}.layers{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.step{min-height:unset}.step:not(:last-child):after{display:none}.research{grid-template-columns:1fr}.research .card{min-height:unset}.metrics{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+<section class="slide active" data-title="Eyes on Fires">
+ <div class="topline"><div class="brand">EARTH OBSERVATION / WILDFIRE INTELLIGENCE</div><div class="status">PROJECT DEMO · 01 / 07</div></div>
+ <div class="cover">
+  <div>
+   <div class="tag"><i class="dot"></i> EYES ON FIRES</div>
+   <h1 style="margin-top:25px">See the signal.<br><span class="accent">Inspect the evidence.</span></h1>
+   <p class="lead">An Earth-observation explorer connecting satellite fire detections, atmospheric conditions and scientific research.</p>
+   <div class="cover-meta"><span class="tag">NASA FIRMS</span><span class="tag">MODIS · VIIRS</span><span class="tag">3D EARTH</span><span class="tag">AMFI + COUNCILRISE</span></div>
+   <div class="cover-bottom">NASA SPACE APPS CHALLENGE · PROJECT DEMONSTRATION</div>
+  </div>
+  <div class="planet-wrap"><div class="orbit"></div><div class="orbit o2"></div><div class="planet"><i class="heat a"></i><i class="heat b"></i><i class="heat c"></i></div></div>
+ </div>
+</section>
+<section class="slide" data-title="The live explorer">
+ <div class="topline"><div class="brand">01 / THE PRODUCT</div><div class="status">LIVE APPLICATION EMBED</div></div>
+ <h2>One globe. Several ways to investigate Earth.</h2>
+ <p class="muted">Navigate the planet, switch between Earth and Night IR, inspect a satellite detection and explore the historical timeline.</p>
+ <div class="app-layout">
+  <div class="app-frame"><iframe title="Live Eyes on Fires Earth explorer" src="/" loading="eager" allow="fullscreen"></iframe></div>
+  <div class="app-side">
+   <div class="card callout"><div class="num">01 / VIEW MODES</div><h3>Earth · Night IR · Fire Stories</h3><p>Change the visual context and open curated historical fire stories.</p></div>
+   <div class="card callout"><div class="num" style="color:var(--cyan)">02 / SCIENCE LAB</div><h3>Metrics, missions, methods and readiness</h3><p>Open the research tools from the top navigation.</p></div>
+   <div class="card callout"><div class="num" style="color:var(--mint)">03 / TIME CONTROLS</div><h3>Replay the observation archive</h3><p>Move through dates and inspect the satellite detections available for each period.</p></div>
+   <a class="tag" href="/" target="_blank" rel="noopener" style="justify-content:center;text-decoration:none">OPEN EXPLORER IN NEW TAB ↗</a>
+  </div>
+ </div>
+</section>
+<section class="slide" data-title="Earth intelligence layers">
+ <div class="topline"><div class="brand">02 / EARTH INTELLIGENCE</div><div class="status">LAYER SELECTOR</div></div>
+ <h2>Turn the globe into an instrument.</h2>
+ <p class="muted">Choose a layer, choose a time mode, and inspect what the source data can support.</p>
+ <div class="grid layers">
+  <div class="card layer-card"><div class="layer-no accent">01 / OBSERVE</div><h3>Satellite observations</h3><ul><li>MODIS / VIIRS thermal detections</li><li>Terra · Aqua · Suomi-NPP</li><li>NOAA-20 · NOAA-21</li><li>Satellite orbit tracks</li></ul><div class="card-foot accent">DETECTIONS ≠ CONFIRMED WILDFIRES</div></div>
+  <div class="card layer-card"><div class="layer-no mint">02 / ENVIRONMENT</div><h3>Atmosphere & land</h3><ul><li>Temperature · Humidity / VPD</li><li>Wind vectors · Precipitation</li><li>Soil moisture · Vegetation stress</li><li>CAPE / lightning context</li></ul><div class="card-foot mint">HISTORICAL · LIVE · FORECAST</div></div>
+  <div class="card layer-card"><div class="layer-no amber">03 / INTERPRET</div><h3>Fire danger & research</h3><ul><li>Canadian FWI system</li><li>AMFI-02 readiness grid</li><li>Observation-opportunity audit</li><li>Source and evidence provenance</li></ul><div class="card-foot amber">FWI ≠ IGNITION PROBABILITY</div></div>
+ </div>
+ <div class="modebar"><span class="mode">HISTORICAL</span><span class="mode">LIVE</span><span class="mode">FORECAST +24 / +48 / +72H</span><span class="explain">ERA5-Land reanalysis is not a forecast; NWP forecast inputs are kept distinct.</span></div>
+</section>
+<section class="slide" data-title="From orbit to evidence">
+ <div class="topline"><div class="brand">03 / DATA PIPELINE</div><div class="status">OBSERVATION QUALITY</div></div>
+ <h2>From orbit data to inspectable evidence.</h2>
+ <p class="muted">The pipeline checks where a satellite actually looked before interpreting what it did - or did not - detect.</p>
+ <div class="flow">
+  <div class="step"><div class="number">01 / ACQUIRE</div><h3>NASA FIRMS + LAADS</h3><p>MODIS / VIIRS fire, geolocation and cloud-mask granules.</p></div>
+  <div class="step"><div class="number" style="color:var(--amber)">02 / SCREEN</div><h3>Coverage-aware selection</h3><p>Catalog candidates → coarse geolocation → exact footprint verification.</p></div>
+  <div class="step"><div class="number" style="color:var(--mint)">03 / DECODE</div><h3>Product quality & geometry</h3><p>FireMask · cloud bits · view angle · valid pixels · source completeness.</p></div>
+  <div class="step"><div class="number">04 / RECONCILE</div><h3>Historical event timelines</h3><p>Event location · active interval · timezone and date uncertainty.</p></div>
+  <div class="step"><div class="number" style="color:var(--amber)">05 / REGISTER</div><h3>Observation evidence</h3><p>Detected · unobservable · uncertain. Qualified opportunities require evidence.</p></div>
+ </div>
+ <div class="metrics">
+  <div class="metric"><strong>14 / 14</strong><span>granules acquired</span></div><div class="metric"><strong>1 / 14</strong><span>covered Alberta</span></div><div class="metric"><strong>13 / 14</strong><span>wrong-orbit passes rejected</span></div><div class="metric"><strong>0</strong><span>known valid cases missed</span></div>
+ </div>
+ <p class="small" style="margin-top:10px">One-week MODIS fixed-time selection test. The 5 km geolocation screen was validated on the known 14-granule set; full pixel-footprint verification remains required.</p>
+</section>
+<section class="slide" data-title="Science Lab">
+ <div class="topline"><div class="brand">04 / SCIENCE LAB</div><div class="status">METHODS + AUDIT</div></div>
+ <h2>The Science Lab makes the map auditable.</h2>
+ <p class="muted">Explore the evidence and the methods behind each visualization - not just the glowing points.</p>
+ <div class="lab-layout">
+  <div class="card"><div class="brand">SCIENCE LAB / MENU</div><div class="menu-list">
+   <div class="menu-item sel">● Detection Metrics M1–M4</div><div class="menu-item">Satellite Missions</div><div class="menu-item">2D Hotspot Map</div><div class="menu-item">Decisions D1–D3</div><div class="menu-item sel">● Methodology & Audit</div><div class="menu-item sel">● AMFI-02 Data Readiness</div><div class="menu-item">AMFI Discovery & FWI</div><div class="menu-item sel">● AMFI-PX Science Lab</div>
+  </div></div>
+  <div>
+   <div class="card"><div class="brand" style="color:var(--amber)">DETECTION METRICS / OBSERVED DATA</div><div class="metric-grid" style="margin-top:16px">
+    <div class="metric-card"><b>M1</b><strong>DETECTION COUNT</strong><p>How many thermal detections were observed?</p></div>
+    <div class="metric-card"><b>M2c</b><strong>1 KM GEODESIC CLUSTERS</strong><p>Group nearby detections spatially.</p></div>
+    <div class="metric-card"><b>M3</b><strong>SUMMED FRP</strong><p>Observed fire radiative power (MW).</p></div>
+    <div class="metric-card"><b>M4c</b><strong>NADIR-FILTERED FRP</strong><p>Reduce scan-angle sensitivity.</p></div>
+   </div></div>
+   <div class="hygiene"><b style="color:var(--amber)">DATA-HYGIENE CONTROLS</b><br>Empty retrieval ≠ zero fires · Partial UTC day quarantined · Source/date/platform retained · View-angle sensitivity checked · Detections ≠ confirmed wildfires.</div>
+  </div>
+ </div>
+</section>
+<section class="slide" data-title="AMFI research">
+ <div class="topline"><div class="brand">05 / AMFI RESEARCH</div><div class="status">NO OPERATIONAL CHAMPION</div></div>
+ <h2>Research progress - with the brakes still working.</h2>
+ <p class="muted">AMFI uses CouncilRise to formulate, test and challenge methods. A promising result is not promoted into an operational forecast.</p>
+ <div class="research">
+  <div class="card"><div class="state" style="color:var(--cyan)">AMFI-01 · ARCHIVED</div><div class="brand">SCIENTIFIC DISCOVERY</div><h3 style="margin-top:14px">D-AMFI-01</h3><p>The original target mixed repeat activity with new documented fire events. Decomposition was independently reproduced on the same data.</p><div class="foot accent">PROMISING_UNVALIDATED · NO CHAMPION</div></div>
+  <div class="card"><div class="state" style="color:var(--amber)">AMFI-02 · ACQUISITION FOCUSED</div><div class="brand" style="color:var(--amber)">EVIDENCE READINESS</div><h3 style="margin-top:14px">What is missing?</h3><p>Independent event timelines, repeated valid observation opportunities, reporting coverage and archived forecast evidence.</p><div class="foot amber">PX-D-02 EMPIRICAL TEST · NO-GO</div></div>
+  <div class="card"><div class="state" style="color:var(--mint)">AMFI-PX · CLOSED</div><div class="brand" style="color:var(--mint)">EXPLORATORY SEARCH</div><h3 style="margin-top:14px">PX-D-02</h3><p>Detection externalization remains a synthetic methodological principle. Thirteen exploratory rounds ended without an operational champion.</p><div class="foot mint">SYNTHETIC PRINCIPLE · FROZEN</div></div>
+ </div>
+ <div class="notice">CURRENTLY: observations + weather + fire danger. NOT YET: validated ignition probabilities or operational wildfire alerts.</div>
+</section>
+<section class="slide" data-title="The next frontier">
+ <div class="topline"><div class="brand">06 / NEXT FRONTIER</div><div class="status">PROJECT ACCESS + DISCLOSURE</div></div>
+ <h2>From seeing fires to understanding what comes next.</h2>
+ <p class="muted">The long-term ambition is prospective wildfire intelligence - built only when the evidence can support it.</p>
+ <div class="future-layout">
+  <div class="card"><div class="brand">RESEARCH ROADMAP</div><div class="roadmap" style="margin-top:20px">
+   <div class="roadrow"><div class="stage">NOW</div><div><h3>Complete observation and event evidence</h3><p>Coverage-aware acquisition · event timelines · observation quality</p></div></div>
+   <div class="roadrow"><div class="stage" style="color:var(--amber)">NEXT</div><div><h3>Establish independent detection information</h3><p>Repeated opportunities · detection calibration · reporting coverage</p></div></div>
+   <div class="roadrow"><div class="stage" style="color:var(--mint)">THEN</div><div><h3>Register a prospective prediction target</h3><p>Archived forecast inputs · lead time · independent evaluation</p></div></div>
+   <div class="roadrow"><div class="stage">FUTURE</div><div><h3>Test and validate prediction methods</h3><p>Weather · fuel · lightning · terrain · human ignition factors</p></div></div>
+  </div></div>
+  <div class="card links"><div class="brand" style="color:var(--amber)">EXPLORE THE PROJECT</div><a href="/" target="_blank" rel="noopener">↗ Live Earth explorer</a><a href="https://github.com/Just4Skii/firms-constellation-explorer" target="_blank" rel="noopener">↗ Source code on GitHub</a><a href="https://firms.modaps.eosdis.nasa.gov/" target="_blank" rel="noopener">↗ NASA FIRMS data</a><a href="https://ladsweb.modaps.eosdis.nasa.gov/" target="_blank" rel="noopener">↗ NASA LAADS DAAC</a></div>
+ </div>
+ <div class="disclosure"><b style="color:var(--amber);letter-spacing:.08em">AI-ASSISTED DEVELOPMENT DISCLOSURE</b><br>ChatGPT and DeepSeek assisted code drafting/debugging, research organization and presentation copy. The satellite observations and fire records shown are sourced from project datasets, not AI-generated observations or labels.</div>
+</section>
+<div class="progress"><i id="progress"></i></div>
+<div class="controls"><button id="prev" type="button">← PREVIOUS</button><span class="counter" id="counter">01 / 07</span><button id="next" class="primary" type="button">NEXT →</button><button id="full" type="button">FULLSCREEN</button></div>
+</div>
+<script>
+(function(){
+ const slides=[...document.querySelectorAll('.slide')],counter=document.getElementById('counter'),progress=document.getElementById('progress');let index=0;
+ function show(n){index=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,i)=>s.classList.toggle('active',i===index));counter.textContent=String(index+1).padStart(2,'0')+' / 07';progress.style.width=((index+1)/7*100)+'%';document.getElementById('prev').disabled=index===0;document.getElementById('next').textContent=index===6?'RESTART ↻':'NEXT →';}
+ document.getElementById('prev').addEventListener('click',()=>show(index-1));
+ document.getElementById('next').addEventListener('click',()=>show(index===6?0:index+1));
+ document.getElementById('full').addEventListener('click',()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.();});
+ window.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(index===6?6:index+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(index-1)}if(e.key==='Home')show(0);if(e.key==='End')show(6)});
+ show(0);
+})();
+</script>
+</body>
+</html>
